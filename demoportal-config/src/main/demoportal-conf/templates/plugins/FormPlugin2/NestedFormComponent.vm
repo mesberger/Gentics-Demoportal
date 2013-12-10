@@ -1,0 +1,6 @@
+#if($component.label && $component.label.length() > 0)
+<label>$component.label:</label><br />
+#end
+	#foreach($item in $component.items)$item#end
+$component.buttons
+<div class="nofloat"></div>

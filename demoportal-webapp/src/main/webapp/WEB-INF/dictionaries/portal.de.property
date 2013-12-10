@@ -1,0 +1,62 @@
+search.yourquery = Ihre Abfrage
+search.hits_from = Treffer
+search.hits_to = bis
+search.hits_of = von
+search.title = Titel
+search.score = Score
+search.date = Datum
+search.didyoumean = Meinten Sie
+search.next_page = Weitere Treffer
+search.prev_page = Vorige Treffer
+search.comment = Kommentar
+search.comments = Kommentare
+search.lastcomment = Letzter Kommentar
+search.find = Finden
+search.linkedin = Verlinkt in
+
+search.about = Ungefähr
+search.results = Ergebnisse
+search.seconds = Sekunden
+search.showing_results = Suchergebnis für  
+search.nothing_found = Kein Suchergebnis für 
+search.try_begin_with = Versuchen Sie Ergebnisse zu finden, die mit $newsearch beginnen
+search.try_contains = Versuchen Sie Ergebnisse zu finden, die $newsearch enthalten
+search.maysortby = Sie können sortieren nach
+
+language.interfacelang = Sprache der Oberfläche ändern
+language.contentlang = Inhalte falls verfügbar darstellen auf
+language.fallback = Aktueller Inhalt "$pagename" wird auf $pagelanguage dargestellt, weil er auf $currentlanguage nicht verfügbar ist.
+language.translate = Übersetzen in
+
+actions.add = Neu
+actions.add.title = Eine neue Seite erstellen
+actions.a_new_page = Seite hinzufügen
+actions.edit = Bearbeiten
+actions.edit.title = Aktuelle Seite bearbeiten
+actions.save = Speichern
+actions.save.title = Änderungen in der Seite speichern
+actions.publish=Publizieren
+actions.publish.title = Änderungen speichern und Seite veröffentlichen
+actions.cancel = Abbrechen
+actions.cancel.title = Bearbeitung der Seite abbrechen. Nicht gespeicherte Änderungen gehen verloren.
+actions.or=oder
+actions.requestpublish=Freigabe anfordern
+actions.save_success=Speichern erfolgreich
+actions.saved=Gespeichert
+actions.saved_seconds_ago=Vor %secs% Sekunden gespeichert
+actions.saved_minute_ago=Vor einer Minute gespeichert
+actions.saved_minutes_ago=Vor %mins% Minuten gespeichert
+actions.delete=Löschen
+actions.delete.title = Die Seite löschen
+actions.delete.success=Der Löschvorgang war erfolgreich.
+actions.delete.error=Beim Löschen ist ein Fehler aufgetreten.
+actions.deletemenu=Diesen Menüeintrag löschen
+actions.newfolder=Neu
+actions.newfolder.title=Erstelle einen neuen Menüeintrag
+actions.create=Erstellen
+actions.createfolder.error=Es ist ein Fehler beim Erstellen des Ordners aufgetreten
+
+login.welcome = Hallo $firstname!
+login.logout = Abmelden
+
+Pages=Seiten

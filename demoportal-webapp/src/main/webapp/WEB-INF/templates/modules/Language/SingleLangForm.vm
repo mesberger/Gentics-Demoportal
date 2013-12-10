@@ -1,0 +1,59 @@
+## This is the variant of the language portlet which lets the user choose a single language, which is used as
+## portal and content language.
+## To use this template, configure it in the gentics-portlet.xml like:
+## <template loader="gentics.portletapp">
+##   <classes>
+##     <class id="plugin">formplugin2</class>
+##   </classes>
+##   <parameters>
+##     <parameter id="filename">modules/Language/SingleLangForm.vm</parameter>
+##   </parameters>
+## </template>
+#set($trigger = $portal.createPortalURL("triggerEvent"))
+#set($pagelanguagename = "$portlet.session.portletscope.pagelanguagename")
+#set($pagelanguageid = "$portlet.session.portletscope.pagelanguageid")
+#set($pagename = $portlet.session.portletscope.pagename)
+<div id="languagepanelwrapper">
+<a href="#" onclick="$('#languagepanel').fadeIn();" id="clang">Change Language</a>
+<div id="languagepanel">
+	<a href="#" onclick="$('#languagepanel').fadeOut();" class="language">Change Language</a>
+	<div class="clear"></div>
+	<div class="cover"></div>
+	<div class="container">
+		<h3>$portal.i18n("language.interfacelang")</h3>
+$trigger.setParameter("event", "onLanguageChange")##
+#set($translate = $portal.createPortalURL("triggerEvent"))##
+$translate.setParameter("event", "onTranslateContent")##
+		<ul>
+#foreach($lang in $portlet.session.portletscope.languages)##
+	#if($lang.id == $portal.modules.content.parameters.language)##
+		#set($selected = "class='selected'")##
+		#set($contentlanguage = $lang.language)##
+	#else##
+		#set($selected = '')##
+	#end##
+	$trigger.setParameter("language", $lang.id)##
+	#if($lang.contentid)##
+					<li $!selected><a href="$trigger">$lang.language</a></li>
+	#else##
+		$translate.setParameter("language", $lang.id)
+					<li $!selected><span class="translate"><a href="$translate">$portal.i18n("language.translate")</a></span>&nbsp;&nbsp;&nbsp;<a href="$trigger" class="lang">$lang.language</a></li>
+	#end##
+#end##
+		</ul>
+#if ("$pagelanguageid" != "$portal.modules.content.parameters.language")##
+#set($trans = $portal.i18n("language.fallback"))##
+$trans.setParameter("pagename", $pagename)##
+$trans.setParameter("pagelanguage", $pagelanguagename)##
+$trans.setParameter("currentlanguage", $contentlanguage)##
+		<div class="message info">$trans</div>
+#end##
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+// handle mouseleave event for language switcher
+jQuery('#languagepanel .container').mouseleave(function() {
+	jQuery('#languagepanel').fadeOut("fast");
+});
+</script>

@@ -1,0 +1,12 @@
+#foreach ( $button in $component.buttons ) ##
+  #if($button.visible) ##
+	#if ($component.properties.js) ##
+	  #set($onclick = "onclick='$component.properties.js'") ##
+	#end ##
+	#if ($component.properties.title) ##
+	  #set($title = "title='$portal.imps.string.escapeHTML($portal.i18n($component.properties.title))'") ##
+	#end ##
+<button id="$button.name" name="$button.name" $!onclick $!title>$button.label</button>
+<small>$portal.i18n("$!component.properties.info")</small>
+  #end ##
+#end ##

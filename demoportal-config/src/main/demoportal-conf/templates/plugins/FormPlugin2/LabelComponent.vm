@@ -1,0 +1,5 @@
+		#if ($button.properties.style && $button.properties.style != "")<span style="$component.properties.style">#end
+#if($component.label && $component.label.length() > 0)<label>$component.label#if ($component.optional == false)*#end</label>#end
+<span class="text">$!{component.text}</span>
+#if ($button.properties.style && $button.properties.style != "")</span>#end
+<div class="alert">#if($component.optional)$component.errortext#end</div>

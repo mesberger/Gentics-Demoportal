@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="Comments" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<datasourcelistcomponent id="comments">
+		<rule><![CDATA[object.obj_type == 35000 && object.forcontentid == portal.modules.content.contentid]]></rule>
+		<sortby>object.sortorder</sortby>
+		<columns></columns>
+	</datasourcelistcomponent>
+	<textcomponent id="comment">
+		<visible><prule>portal.user.isloggedin</prule></visible>
+		<label>comment</label>
+	</textcomponent>
+	<buttoncomponent id="submit">
+		<visible><prule>portal.user.isloggedin</prule></visible>
+		<label>submit</label>
+		<actions>
+			<action class="RenderTemplateAction" id="username">
+				<parameters>
+					<parameter id="template">$portal.user.firstname $portal.user.lastname</parameter>
+				</parameters>
+			</action>
+			<action class="DatasourceAction" id="create">
+				<parameters>
+					<parameter id="operation">create</parameter>
+					<parameter id="obj_type">35000</parameter>
+					<parameter id="userid" mapped="portal.user.id" />
+					<parameter id="username" mapped="actions.username.template" />
+					<parameter id="useremail" mapped="portal.user.email" />
+					<parameter id="forcontentid" mapped="portal.modules.content.contentid" />
+					<parameter id="text" mapped="view.components.comment.data" />
+					<parameter id="ts" mapped="portal.vars.now" />
+				</parameters>
+			</action>
+			<action class="DatasourceAction" id="save">
+				<parameters>
+					<parameter id="operation">save</parameter>
+					<parameter id="object" mapped="actions.create.object" />
+				</parameters>
+			</action>
+		</actions>
+	</buttoncomponent>
+</view>

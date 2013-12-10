@@ -1,0 +1,564 @@
+<!--
+this is the main configuration file of the portal server. it's loaded once on server startup.
+-->
+<portal-node>
+	<!-- portal template definition -->
+	<general-section>
+		<parameters>
+			<parameter id="portal.activation.auto">true</parameter>
+			<!-- check for updates each startup -->
+			<parameter id="portal.update.check">true</parameter>
+			<!-- use the new ExpressionParser -->
+			<parameter id="portal.expressionparser">true</parameter>
+			<parameter id="portal.expressionparser.treatEmptyStringAsNull">true</parameter>
+			<parameter id="portal.dictionaries.modificationCheckInterval">${portal.modificationCheckInterval}</parameter>
+			<!-- disable the deprecated view references. this significantly reduces per session memory -->
+			<parameter id="portal.viewplugin.disableviewreferences">true</parameter>
+			<!-- activate portal pages -->
+			<parameter id="portal.pages">true</parameter>
+			<parameter id="portal.portlet.entities.file">${com.gentics.portalnode.confpath}/portletentities.xml</parameter>
+			<parameter id="portal.urlmappings">true</parameter>
+			<parameter id="portal.keepsessiononlogin">true</parameter>
+		</parameters>
+		<properties>
+			<property id="portletapp_prefix">${portal.portletapp_prefix}</property>
+			<property id="template_id">${portal.template_id}</property>
+			<property id="gcnbackendurl">${portal.gcnbackendurl}</property>
+			<property id="gcnbackendpath">${portal.backendpath}</property>
+			<property id="navrootfolder_id">${portal.navrootfolder_id}</property>
+			<property id="homepage_id">${portal.homepage_id}</property>
+		</properties>
+	</general-section>
+	<pages-section>
+		<pages>
+			<page id="content">
+				<positions>
+					<position id="topnav">
+						<portlets>
+							<portlet id="topnav" />
+						</portlets>
+					</position>
+					<position id="search">
+						<portlets>
+							<portlet id="search" />
+						</portlets>
+					</position>
+					<position id="left">
+						<portlets>
+							<portlet id="subnav" />
+							<portlet id="actions" />
+							<portlet id="pages" />
+						</portlets>
+					</position>
+					<position id="center">
+						<portlets>
+							<portlet id="content" />
+							<portlet id="tagging" />
+							<portlet id="like" />
+							<portlet id="comments" />
+						</portlets>
+					</position>
+					<position id="right">
+						<portlets>
+							<portlet id="login" />
+						</portlets>
+					</position>
+					<position id="tools">
+						<portlets>
+							<portlet id="language"/>
+							<portlet id="logintools"/>
+						</portlets>
+					</position>
+				</positions>
+			</page>
+			<page id="portalpage_small">
+				<positions>
+					<position id="topnav">
+						<portlets>
+							<portlet id="topnav" />
+						</portlets>
+					</position>
+					<position id="search">
+						<portlets>
+							<portlet id="search" />
+						</portlets>
+					</position>
+					<position id="left">
+						<portlets>
+							<portlet id="subnav" />
+							<portlet id="actions" />
+							<portlet id="pages" />
+						</portlets>
+					</position>
+					<position id="center">
+						<portlets>
+							<portlet id="content" />
+							<portlet id="tagging" />
+							<portlet id="like" />
+							<portlet id="comments" />
+						</portlets>
+					</position>
+					<position id="right">
+						<portlets>
+							<portlet id="login" />
+						</portlets>
+					</position>
+					<position id="tools">
+						<portlets>
+							<portlet id="language"/>
+							<portlet id="logintools"/>
+						</portlets>
+					</position>
+				</positions>
+			</page>
+			<page id="wikidocs">
+				<positions>
+					<position id="topnav">
+						<portlets>
+							<portlet id="topnav" />
+						</portlets>
+					</position>
+					<position id="search">
+						<portlets>
+							<portlet id="search" />
+						</portlets>
+					</position>
+					<position id="left">
+						<portlets>
+							<portlet id="subnav" />
+							<portlet id="actions" />
+							<portlet id="pages" />
+						</portlets>
+					</position>
+					<position id="center">
+						<portlets>
+							<portlet id="content" />
+							<portlet id="comments" />
+						</portlets>
+					</position>
+					<position id="tools">
+						<portlets>
+							<portlet id="language"/>
+							<portlet id="logintools"/>
+						</portlets>
+					</position>
+				</positions>
+			</page>
+			<page id="search">
+				<positions>
+					<position id="topnav">
+						<portlets>
+							<portlet id="topnav" />
+						</portlets>
+					</position>
+					<position id="search">
+						<portlets>
+							<portlet id="search" />
+						</portlets>
+					</position>
+					<position id="center" allowedwindowstates="maximized">
+						<portlets>
+							<portlet id="search" />
+						</portlets>
+					</position>
+					<position id="right">
+						<portlets>
+							<portlet id="login" />
+						</portlets>
+					</position>
+					<position id="tools">
+						<portlets>
+							<portlet id="language"/>
+							<portlet id="logintools"/>
+						</portlets>
+					</position>
+				</positions>
+			</page>
+			<page id="login">
+				<positions>
+					<position id="topnav">
+						<portlets>
+							<portlet id="topnav" />
+						</portlets>
+					</position>
+					<position id="left">
+						<portlets>
+							<portlet id="subnav" />
+						</portlets>
+					</position>
+					<position id="search">
+						<portlets>
+							<portlet id="search" />
+						</portlets>
+					</position>
+					<position id="center" allowedwindowstates="maximized">
+						<portlets>
+							<portlet id="login" />
+						</portlets>
+					</position>
+					<position id="right">
+						<portlets>
+						</portlets>
+					</position>
+					<position id="tools">
+						<portlets>
+							<portlet id="language"/>
+							<portlet id="logintools"/>
+						</portlets>
+					</position>
+				</positions>
+			</page>
+			<page id="fullpagemode">
+				<positions>
+					<position id="content">
+						<portlets>
+							<portlet id="content" windowstate="plain" />
+						</portlets>
+					</position>
+				</positions>
+			</page>
+		</pages>
+	</pages-section>
+	<!-- imp/formatter definition, may contain classes implementing the GenticsPortalImpInterface -->
+	<formatter-section>
+		<formatter id="date">
+			<class-name>com.gentics.portalnode.formatter.GenticsDateFormatter</class-name>
+			<parameters>
+				<!-- to configure customized dateformats copy the dateformatter.xml file to ${com.gentics.portalnode.confpath} and modify the parameter "configuration" accordingly -->
+				<parameter id="configuration">${com.gentics.portalnode.home}/META-INF/config/formatter/dateformatter.xml</parameter>
+			</parameters>
+		</formatter>
+		<formatter id="string">
+			<class-name>com.gentics.portalnode.formatter.GenticsStringFormatter</class-name>
+		</formatter>
+		<formatter id="rule">
+			<class-name>com.gentics.portalnode.formatter.GenticsRuleMatcherImp</class-name>
+		</formatter>
+		<formatter id="query">
+			<class-name>com.gentics.portalnode.formatter.DatasourceQueryImp</class-name>
+		</formatter>
+		<formatter id="calc">
+			<class-name>com.gentics.portalnode.formatter.CalculatorImp</class-name>
+		</formatter>
+		<formatter id="link">
+			<class-name>com.gentics.portalnode.formatter.GenticsPLinkImp</class-name>
+		</formatter>
+		<formatter id="number">
+			<class-name>com.gentics.portalnode.formatter.GenticsNumberFormatter</class-name>
+		</formatter>
+		<formatter id="velocityTools">
+			<class-name>com.gentics.portalnode.formatter.VelocityToolsImp</class-name>
+			<parameters>
+				<!-- Path to the toolbox configuration file. To customize the toolbox you can copy this file to ${com.gentics.portalnode.confpath}. -->
+				<parameter id="configuration">${com.gentics.portalnode.home}/WEB-INF/defaultconfig/toolbox.xml</parameter>
+			</parameters>
+		</formatter>
+		<formatter id="i18n">
+			<class-name>com.gentics.portalnode.formatter.I18nImp</class-name>
+		</formatter>
+		<formatter id="sorter">
+			<class-name>com.gentics.portalnode.formatter.SortImp</class-name>
+		</formatter>
+	</formatter-section>
+	<!-- defines portal authentication methods -->
+	<authentication-section>
+		<authentication-descriptor default="gcn">
+			<authentication id="gcn">
+				<Description>Gentics Content.Node Authentication Module</Description>
+				<class-name>com.gentics.portalnode.auth.manager.GCNAuthenticationManager</class-name>
+				<parameters>
+					<parameter id="url"><![CDATA[${portal.gcnauthurl}]]></parameter>
+				</parameters>
+				<mapping>
+				</mapping>
+			</authentication>
+		</authentication-descriptor>
+		<anonymous-user>
+			<domain name="*" authentication="gcn">
+				<anonymous id="gcn">
+					<anonymous-parameter id="userid">max.mustermann@gentics.com</anonymous-parameter>
+					<anonymous-parameter id="firstname">Max</anonymous-parameter>
+					<anonymous-parameter id="lastname">Mustermann</anonymous-parameter>
+					<anonymous-parameter id="cn">Max Mustermann</anonymous-parameter>
+					<anonymous-parameter id="groups">${portal.anonymous.group}</anonymous-parameter>
+				</anonymous>
+			</domain>
+		</anonymous-user>
+	</authentication-section>
+	<!-- define datasources (Gentics ContentMap, JDBC, LDAP, ...) -->
+	<datasource-section>
+		<datasource-handles>
+			<datasource-handle typeid="sql" id="content">
+				<parameter name="type">jdbc</parameter>
+				<parameter name="url">${portal.ds.content.url}</parameter>
+				<parameter name="driverClass">com.mysql.jdbc.Driver</parameter>
+				<parameter name="username">${portal.ds.content.username}</parameter>
+				<parameter name="passwd">${portal.ds.content.passwd}</parameter>
+			</datasource-handle>
+			<datasource-handle typeid="sql" id="portal">
+				<parameter name="type">jdbc</parameter>
+				<parameter name="url">${portal.ds.portal.url}</parameter>
+				<parameter name="driverClass">com.mysql.jdbc.Driver</parameter>
+				<parameter name="username">${portal.ds.portal.username}</parameter>
+				<parameter name="passwd">${portal.ds.portal.passwd}</parameter>
+			</datasource-handle>
+		</datasource-handles>
+		<datasources>
+			<datasource id="content" typeid="contentrepository">
+				<parameter name="cache">${portal.ds.cache}</parameter>
+				<parameter name="cache.syncchecking">${portal.ds.cache}</parameter>
+				<handles>
+					<handle>content</handle>
+				</handles>
+			</datasource>
+			<datasource id="portal" typeid="contentrepository">
+				<parameter name="cache">${portal.ds.cache}</parameter>
+				<parameter name="cache.syncchecking">${portal.ds.cache}</parameter>
+				<handles>
+					<handle>portal</handle>
+				</handles>
+			</datasource>
+		</datasources>
+	</datasource-section>
+	<!-- defines template engine and parameters -->
+	<template-section>
+		<velocity-parameters>
+			<!-- parameters are the velocity properties -->
+			<parameter id="resource.loader">file</parameter>
+			<parameter id="file.resource.loader.path">${com.gentics.portalnode.confpath}</parameter>
+			<parameter id="output.encoding ">UTF-8</parameter>
+			<parameter id="directive.foreach.counter.initial.value">1</parameter>
+			<parameter id="runtime.log.logsystem.class">org.apache.velocity.runtime.log.SimpleLog4JLogSystem</parameter>
+			<parameter id="runtime.log.logsystem.log4j.category">velocity</parameter>
+			<parameter id="velocimacro.library">templates/macros.vm,templates/defaultmacros.vm</parameter>
+			<parameter id="velocimacro.library.autoreload">true</parameter>
+			<parameter id="file.resource.loader.cache">false</parameter>
+			<parameter id="velocimacro.permissions.allow.inline.to.replace.global">true</parameter>
+		</velocity-parameters>
+		<parameters>
+			<!-- parameters for handling of invalid templates and internal use -->
+			<parameter id="on.invalid.template.halt">false</parameter>
+			<parameter id="on.invalid.template.message"></parameter>
+			<parameter id="portletapp.loader.modificationCheckInterval">0</parameter>
+		</parameters>
+		<!-- template loaders -->
+		<template-loaders>
+			<template-loader id="file">
+				<class-name>com.gentics.portalnode.templateengine.loader.FileLoader</class-name>
+			</template-loader>
+			<template-loader id="datasource">
+				<class-name>com.gentics.portalnode.templateengine.loader.CNDatasourceLoader</class-name>
+			</template-loader>
+			<!-- plugin templates, copy the templates/plugin directory to your portalconfiguration and change the path below, if you need custom templates -->
+			<template-loader id="plugins">
+				<class-name>com.gentics.portalnode.templateengine.loader.FileLoader</class-name>
+				<parameters>
+					<parameter id="path">${com.gentics.portalnode.confpath}/templates</parameter>
+					<parameter id="modificationCheckInterval">${portal.modificationCheckInterval}</parameter>
+				</parameters>
+			</template-loader>
+			<!-- internal template load for gentics portlets, don't change -->
+			<template-loader id="gentics">
+				<class-name>com.gentics.portalnode.templateengine.loader.FileLoader</class-name>
+				<parameters>
+					<parameter id="path">${com.gentics.portalnode.home}/WEB-INF/templates</parameter>
+				</parameters>
+			</template-loader>
+			<!-- template loader for portal pages -->
+			<template-loader id="portalpage">
+				<class-name>com.gentics.portalnode.templateengine.loader.FileLoader</class-name>
+				<parameters>
+					<parameter id="path">${com.gentics.portalnode.confpath}templates/portalpages</parameter>
+					<parameter id="modificationCheckInterval">${portal.modificationCheckInterval}</parameter>
+				</parameters>
+			</template-loader>
+			<!-- template loader for portlet frame templates -->
+			<template-loader id="portletframe">
+				<class-name>com.gentics.portalnode.templateengine.loader.FileLoader</class-name>
+				<parameters>
+					<parameter id="path">${com.gentics.portalnode.confpath}/templates/portletframes</parameter>
+					<parameter id="modificationCheckInterval">${portal.modificationCheckInterval}</parameter>
+				</parameters>
+			</template-loader>
+			<!-- TODO add more template loaders here -->
+		</template-loaders>
+		<templates>
+			<!-- template for all portal pages -->
+			<template loader="portalpage">
+				<classes>
+					<class id="type">portalpage</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">gcn5portal.vm</parameter>
+				</parameters>
+			</template>
+			<!-- template for all portal pages -->
+			<template loader="portalpage">
+				<classes>
+					<class id="type">portalpage</class>
+					<class id="portalpage">portalpage_small</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">gcn5portal_small.vm</parameter>
+				</parameters>
+			</template>
+			<!-- template for wikidocs page -->
+			<template loader="portalpage">
+				<classes>
+					<class id="type">portalpage</class>
+					<class id="portalpage">wikidocs</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">gcn5portal-wikidocs.vm</parameter>
+				</parameters>
+			</template>
+			<!-- template for search page -->
+			<template loader="portalpage">
+				<classes>
+					<class id="type">portalpage</class>
+					<class id="portalpage">search</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">gcn5portal-search.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="portalpage">
+				<classes>
+					<class id="type">portalpage</class>
+					<class id="portalpage">fullpagemode</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">gcn5portal-empty.vm</parameter>
+				</parameters>
+			</template>
+			<!-- template for portlet frames for minimized portlets -->
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+					<class id="windowstate">minimized</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">minimized.vm</parameter>
+				</parameters>
+			</template>
+			<!-- template for portlet frames for minimized portlets -->
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+					<class id="windowstate">plain</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plain.vm</parameter>
+				</parameters>
+			</template>
+			<!-- template for all other portlet frames -->
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">boxframe.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+					<class id="portlet">like</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plain.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+					<class id="portlet">tagging</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plain.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+					<class id="portlet">topnav</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">topnavigation.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+					<class id="portlet">subnav</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">subnavigation.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+					<class id="position">search</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">simpleframe.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="portletframe">
+				<classes>
+					<class id="type">portletframe</class>
+					<class id="position">tools</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plain.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</template-section>
+	<!-- defines available languages and dictioniaries -->
+	<language-section>
+		<languages default="en">
+			<language id="en" locale="en_US" />
+			<language id="de" locale="de_AT" />
+			<!-- TODO add all supported languages here -->
+		</languages>
+	</language-section>
+	<!-- defines parameters for administrationportlet deploying of new portletapplications -->
+	<administration-section>
+		<deployer>
+			<class-name>com.gentics.portalnode.genericmodules.admin.TomcatDeployer</class-name>
+			<parameters>
+				<parameter id="managerUsername">admin</parameter>
+				<parameter id="managerPassword"></parameter>
+				<parameter id="managerUrlString">http://localhost:42880/manager</parameter>
+				<parameter id="appBase">${catalina.base}/webapps</parameter>
+			</parameters>
+		</deployer>
+	</administration-section>
+	<!-- defines url mappings for generating beautiful urls -->
+	<urlmapping-section>
+		<mapping>
+			<pathtransformation>
+				<segment>content</segment>
+				<segment urlparameter="p.pub_dir" greedy="true" />
+				<segment urlparameter="p.filename" />
+				<hidden urlparameter="gentics.am">content</hidden>
+			</pathtransformation>
+			<parameters>
+				<parameter id="render.prefix">/Portal.Node</parameter>
+			</parameters>
+		</mapping>
+		<mapping>
+			<pathtransformation>
+				<segment>file</segment>
+				<segment urlparameter="pub_dir" greedy="true" />
+				<segment urlparameter="filename" />
+				<hidden urlparameter="gentics.rs">content</hidden>
+			</pathtransformation>
+			<parameters>
+				<parameter id="render.prefix">/Portal.Node</parameter>
+			</parameters>
+		</mapping>
+	</urlmapping-section>
+</portal-node>

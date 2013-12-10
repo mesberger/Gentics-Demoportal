@@ -1,0 +1,17 @@
+<ul>
+#foreach ($item in $component.items)##
+	## generate link
+	#if ($item.object.startpage)##
+		#set ($link = $portal.imps.link.to($item.object.startpage.toString(), "content"))##
+	#else##
+		#set ($link = "#")##
+	#end##
+	## set active state
+	#if ("$component.properties.contentid" == "$item.object.contentid")##
+		#set ($active="active")##
+	#else##
+		#set ($active="")##	
+	#end
+	<li><a href="$link" class="$active">#langfallback($item.object $portal.modules.content.parameters.language)</a></li>
+#end##
+</ul>

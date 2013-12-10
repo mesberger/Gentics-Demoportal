@@ -1,0 +1,36 @@
+#macro( subnav $children )##
+<ul>
+#foreach ( $child in $children )##
+	<li>
+	    #if ("$portal.modules.content.parameters.backendmode" == "true" && $portal.imps.rule.matches("$child.folder_id.permgroups_folderdelete CONTAINSONEOF portal.user.groups"))##
+	    <button class="delete" onclick="deleteFolder(this, $child.obj_id); return false;" title="$portal.imps.i18n.translate("actions.deletemenu")"><img src="/GCN5_Portal/img/delete.png" /></button>
+	    #end##
+		## generate link
+		#if ($child.object.startpage)##
+			#set ($link = $portal.imps.link.to($child.object.startpage.toString(), "content"))##
+		#else##
+			#set ($link = "#")##
+		#end##
+		#if ($child.isFlappedOpen())##
+			#set ($active = "active")##
+		#else##
+			#set ($active = "")##
+		#end##
+		<a href="$link" class="$active">#langfallback($child.object $portal.modules.content.parameters.language)</a>
+	#if( $child.nodeCount > 0 && $child.isFlappedOpen())##
+		##the recursive call must be masked because of http://issues.apache.org/bugzilla/show_bug.cgi?id=13623
+		#set ($subnav_call="#subnav($child.children)")
+		$subnav_call
+    #end##
+	</li>
+#end##
+</ul>
+#end##
+#if ($component.tree.children.size() == 0)##
+&nbsp;<!-- navigation is empty -->
+<script type="text/javascript">
+jQuery('.left .navigation').css('visibility', 'hidden');
+</script>
+#else##
+#subnav( $component.tree.children )
+#end##

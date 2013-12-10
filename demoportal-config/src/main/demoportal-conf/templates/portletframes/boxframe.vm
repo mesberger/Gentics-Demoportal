@@ -1,0 +1,10 @@
+#set ($lastindex = $portal.page.positions.get($position.id).portlets.size() - 1)
+#if ($lastindex == $position.index)
+#set ($last = "last")
+#end
+<div class="box $portlet.id $!last">
+$portlet.content
+</div>
+#if ($portlet.id == "comments")
+<div class="box last commentsshadow"></div>
+#end

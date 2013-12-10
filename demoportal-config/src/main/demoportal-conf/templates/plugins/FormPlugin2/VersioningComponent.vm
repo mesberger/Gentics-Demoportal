@@ -1,0 +1,45 @@
+<div id="hr_people_embedded">
+
+<div class="rightformelement">
+	<div style="text-align:left;font-weight:bold">
+		<table style="padding:2px;margin:2px;">
+			<tr class="darker">
+				<td><b>Date</b></td>
+				<td><b>Editor</b></td>
+				<td><b>display</b></td>
+				<td><b>restore</b></td>
+			</tr>
+#set($pastheader = false)
+#set($futureheader = false)
+#foreach($version in $component.versions)
+	#if(!$pastheader && $version.date.before($portal.vars.now))
+		<tr>
+			<td class="dark" colspan="4"><i>past changes</i></td>
+		</tr>
+		#set($pastheader = true)
+	#end
+	#if(!$futureheader && $version.date.after($portal.vars.now))
+		<tr>
+			<td class="dark" colspan="4"><i>future changes</i></td>
+		</tr>
+		#set($futureheader = true)
+	#end
+		<tr class="light">
+			<td #if($version.shownVersion)style="color:red"#end><nobr>$portal.imps.date.formatDate($version.date)#if($version.new) (new)#end</nobr></td>
+			<td><nobr>#if($version.user && $version.user != "0")$version.user#end</nobr></td>
+			<td><center>#if($version.displayurl)<a href="$version.displayurl">display</a>#end</center></td>
+			<td><center>#if($version.restoreurl)<a href="$version.restoreurl">restore</a>#end</center></td>
+		</tr>
+#end
+
+		<tr>
+			<td colspan="100">$!{component.date} $!{component.create} $!{component.current}</td>
+		</tr>
+
+		</table>
+		#paging($paging)
+		
+	</div>
+</div>
+
+</div>

@@ -1,0 +1,18 @@
+#if($component.label.length() > 0)
+<label>$component.label:</label>
+#end
+#if($component.value)
+  #if($component.properties.prefix && $component.properties.prefix!="")$component.properties.prefix#end
+  #if ($button.properties.style && $button.properties.style != "")<span style="$component.properties.style">#end
+  
+  #if($component.properties.age && $portal.imps.date.isDate($component.value))
+    $portal.imps.date.dateDiff($component.value, $portal.vars.now, "y") $portal.i18n("years")
+  #else
+    $portal.imps.velocityTools.render.eval($ctx, "$!component.value")
+  #end
+  
+  #if($component.properties.suffix && $component.properties.suffix!="")$component.properties.suffix#end
+  #if ($button.properties.style && $button.properties.style != "")</span> #end
+#else
+  ---
+#end

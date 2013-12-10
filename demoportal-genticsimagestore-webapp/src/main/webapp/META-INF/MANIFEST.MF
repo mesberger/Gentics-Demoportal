@@ -1,0 +1,13 @@
+Manifest-Version: 1.2
+Main-Class: com.gentics.portalnode.Version
+
+Name: com/gentics/portalnode
+Implementation-Title: Gentics Portal.Node GenticsImageStore
+Implementation-Version: @@VERSION@@ @@BUILDNUMBER@@ @@BUILDDATE@@
+Implementation-Vendor: Gentics Software GmbH
+Build: @@BUILDNUMBER@@
+Date: @@BUILDDATE@@
+Version: @@VERSION@@
+Shortname: PNGIS
+Barename: Gentics Portal.Node GenticsImageStore
+Fullname: Gentics Portal.Node GenticsImageStore @@VERSION@@ (build @@BUILDNUMBER@@)

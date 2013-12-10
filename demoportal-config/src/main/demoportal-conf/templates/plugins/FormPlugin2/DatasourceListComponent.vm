@@ -1,0 +1,243 @@
+##=================================================================================================
+## Gentics DataSourceListComponent
+##=================================================================================================
+## supported properties:
+## type: date|number|filesize|timestamp
+## will format the value of the column optimized for the given type.
+
+
+## class definition
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+  #set ($cssclass = $component.properties.cssclass)
+#else
+  #set ($cssclass = "list")
+#end
+
+## label for "search results"
+#if ($component.filtered)
+  #if ($component.filterlabel && $component.filterlabel != "")
+    $component.filterlabel
+  #else
+    <b>$portal.i18n("Search results")</b>
+  #end
+#end
+
+#if($component.quicksearch)$component.quicksearch </br> #end
+
+	<input type="hidden" name="$name" value="" #if(!$component.enabled)disabled="disabled"#end>
+
+#set($tableid="${javax.portlet.response.namespace}_${component.id}")
+<table id="#nsprepareforjs($tableid)" class="grid" #if ($component.properties.style && $component.properties.style != "") style="$component.properties.style" #end  cellspacing="0" cellpadding="0">
+  <tr>
+    <th class="gridHeader gridCheckBox">
+      <input class="checkbox" type="checkbox">
+    </th>
+    
+    ## toolbox
+    #foreach ($header in $component.headers)
+      #set ($toolbox = "$!toolbox <div><input class='gridHeaderCheckbox' type='checkbox' checked rel='$velocityCount' />$header.name</div>")
+    #end
+    
+    #foreach ($header in $component.headers)
+    
+        				#if ($header.sortlink && $component.enabled)
+          					#if ($header.sortorder != "")
+          					  #if ($header.sortorder == "DESC")
+          					    #set ($sortitem = "<div class='gridSort'><div class='gridSortDesc'></div></div>")
+          					  #else 
+          					    #set ($sortitem = "<div class='gridSort'><div class='gridSortAsc'></div></div>")          					    
+          					  #end
+          					#else
+            						#set ($sortitem = "")
+          					#end
+          					#set ($headertext = "<a href='${header.sortlink}'><div style='float: left;'>${header.name}</div>${sortitem}</a>")
+        				#else
+        				  #if ($header.name && $header.name.toString() != "") 
+        				    						#set ($sortitem = "") 
+            					#set ($headertext = "${header.name}$!sortitem")
+        				  #else 
+	            					#set ($headertext = "${header.name}")
+        				  				#end         				    					
+        				#end
+                				
+      <th class="gridHeader" name="${component.name}.$velocityCount">
+        <div class="gridHeaderText">$headertext</div>
+      </th>
+    #end
+    <th class="gridHeader gridHeaderLast">
+      <div class="gridHeaderTools">
+         <div class="gridHeaderToolbox">
+           $toolbox
+         </div>
+      </div>
+    </th>
+    
+  			</tr>
+
+			  #set ($i = 0)
+  
+  #foreach ($item in $component.items)
+    					#set ($i = $i + 1)
+    					#if ( ( $i % 2 ) != 0 )
+  					    ##set ($rowclass = "dark")
+    					#else
+					      ##set ($rowclass = "light")
+    					#end
+
+    <tr class="gridRow#if($component.items.size()==$velocityCount) gridRowLast#end">
+      <td class="gridCheckBox gridRowCheckBox">
+        <input class="checkbox" type="checkbox" name="$name" value="$item.id" #if($item.selected)checked="checked"#end #if(!$component.enabled)disabled="disabled"#end/>
+      </td>
+      #foreach ($prop in $item.props)
+        						## format of "email"
+        #if ( $prop.link && $component.enabled)
+          							#set ($label = "Link to $!prop.value")
+          							<td name="${component.name}.$velocityCount">
+          							  <a href="$prop.link" title="$label">
+          							    $!prop.value
+          							    #if (!$prop.value || ($prop.value.class.name == "java.lang.String" && $prop.value == "") || ($prop.value.class.name != "java.lang.String" && $prop.value.toString() == ""))
+          							      #if ($prop.properties.content)
+          							        $portal.i18n($prop.properties.content)
+          							      #else
+          							        -
+          							      #end
+          							    #end
+          							  </a>
+          							</td>
+        ## format of empty columns
+        						#elseif ( !$prop.value || $prop.value.toString() == "" )
+          							<td name="${component.name}.$velocityCount">
+          							  #if ($prop.properties.content)
+          							    $portal.i18n($prop.properties.content)
+          							  #else
+          							    -
+          							  #end
+          							</td>
+        						## format of "date"
+        						#elseif ($prop.properties.type && $prop.properties.type == "date")
+          							<td name="${component.name}.$velocityCount">$!portal.imps.date.format($prop.value)</td>
+        ## format of "timestamp"  			
+        						#elseif ($prop.properties.type && $prop.properties.type == "timestamp")
+							          <td name="${component.name}.$velocityCount">$!portal.imps.date.format($portal.imps.date.fromTimestamp($prop.value))</td>
+							        ## format of "number"
+        						#elseif ($prop.properties.type && $prop.properties.type == "number")
+          							<td name="${component.name}.$velocityCount">$!portal.imps.number.format($prop.value)</td>
+        ## format of "filesize"  					
+        						#elseif ($prop.properties.type && $prop.properties.type == "filesize")
+          							<td name="${component.name}.$velocityCount">$!portal.imps.number.filesize($prop.value)</td>
+        ## all other columns
+        						#else
+          							<td name="${component.name}.$velocityCount">$!prop.value&nbsp;</td>
+      						  #end
+      #end
+      <td>&nbsp;</td>
+    </tr>
+  #end
+</table>
+
+<br/>
+#if($component.pagesizeselect)$component.pagesizeselect </br>#end
+<div>
+  ## show paging using the paging-macro
+  #if($paging)
+    <div class="paging">  
+			      #paging($paging)
+			    </div>
+  #end  
+  #* Zeigt records nur, wenn Records vorhanden sind! ;-) *#
+  				#if ( $count ) <div class="result">$count #if($count.toString() == "1")$portal.i18n("record")#else$portal.i18n("records")#end</div> #end
+</div>  		
+  
+## check all script
+<script language="JavaScript"> 
+   jQuery(document).ready(function() {
+      jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridHeader').hover(function () {
+            jQuery(this).addClass('gridHeaderActive');
+            if(jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridHeader').length > 3)
+      		{
+            	jQuery(this).find('.gridHeaderTools').addClass('gridHeaderToolsActive');
+            }
+         }, function() {
+            jQuery(this).removeClass('gridHeaderActive');
+            if(jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridHeader').length > 3)
+      		{
+            	jQuery(this).find('.gridHeaderTools').removeClass('gridHeaderToolsActive')
+            }
+      });
+      
+      jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridRow').hover(function() {
+         jQuery(this).addClass('gridRowActive');
+      }, function() {
+         jQuery(this).removeClass('gridRowActive');
+      });
+      
+      
+      jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridRow').click( function() {
+         toggleRow(jQuery(this));
+      });
+
+      jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridRow .checkbox').click( function() {
+         toggleRow(jQuery(this).parents('tr'));
+      });
+      
+      jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridHeader .checkbox').click( function() {
+         if (jQuery(this).attr('checked')) {
+            jQuery(this).parents('table').find('.gridRow').each ( function() {
+               markRow(jQuery(this), null);
+            });
+         } else {
+            jQuery(this).parents('table').find('.gridRow').each ( function() {
+               unmarkRow(jQuery(this), null);
+            });
+         }
+      });
+      
+      function toggleRow(row) {
+         var checkBox = row.find('.checkbox');
+         if (checkBox.attr('checked')) {
+            unmarkRow(row, checkBox);
+         } else { 
+            markRow(row, checkBox);
+         }      
+      }
+      
+      function unmarkRow(row, checkBox) {
+            if (checkBox == null)
+               checkBox = row.find('.checkbox');
+            checkBox.attr('checked', false);
+            checkBox.parents('td').removeClass('gridRowCheckBoxActive');
+            row.removeClass('gridRowSelected');
+      }
+      function markRow(row, checkBox) {
+            if (checkBox == null)
+               checkBox = row.find('.checkbox');
+            checkBox.attr('checked', true);
+            checkBox.parents('td').addClass('gridRowCheckBoxActive');
+            row.addClass('gridRowSelected');
+      }
+      
+      jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridHeaderTools').click( function() {
+      	if(jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridHeader').length > 3)
+      	{
+         jQuery(this).find('.gridHeaderToolbox').toggle();
+        }
+      });
+      
+      jQuery('${portal.imps.velocityTools.esc.h}#nsprepareforjs($tableid)').find('.gridHeaderToolbox input').click( function() {
+         if (jQuery(this).parents('.gridHeaderToolbox').find('input[type=checkbox]:checked').length > 0) {
+           var id = jQuery(this).attr("rel");
+           if (jQuery(this).attr("checked")) {
+              jQuery("[name='${component.name}." + id + "']").show();
+           } else {
+              jQuery("[name='${component.name}." + id + "']").hide();
+           }
+         } else {
+           return false;
+         }
+      });
+      
+   });
+   
+   
+   
+</script>

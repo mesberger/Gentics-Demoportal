@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app xmlns="http://www.gentics.com/gentics-portlet-app">
+	<portlet>
+		<portlet-name>TopNavigation</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir" type="string">
+				path of the view definitions
+			</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/TopNavigation</parameter>
+			<parameter name="datasource">content</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">DatasourceListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/TopNavigation/DatasourceListComponent.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plugins/FormPlugin2/Plain.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plugins/FormPlugin2/ListComponent.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>
+	<portlet>
+		<portlet-name>SubNavigation</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir"
+				type="string">
+				path of the view definitions
+			</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/SubNavigation</parameter>
+			<parameter name="datasource">content</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">DatasourceTreeComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/SubNavigation/DatasourceTreeComponent.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plugins/FormPlugin2/ListComponent.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ButtonComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Actions/ButtonComponent.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ListComponent</class>
+					<class id="id">actions</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/SubNavigation/ActionsList.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ListComponent</class>
+					<class id="id">relocate</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/SubNavigation/ActionsList.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>
+	<portlet>
+		<portlet-name>Comments</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir"
+				type="string">
+				path of the view definitions
+			</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/Comments</parameter>
+			<parameter name="datasource">content</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">DatasourceListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Comments/DatasourceListComponent.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">TextComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Comments/TextComponent.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>
+	<portlet>
+		<portlet-name>Like</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir"
+				type="string">
+				path of the view definitions
+			</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/Like</parameter>
+			<parameter name="datasource">portal</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ButtonComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Like/ButtonComponent.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>		
+	<portlet>
+		<portlet-name>Tagging</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir"
+				type="string">
+				path of the view definitions
+			</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/Tagging</parameter>
+			<parameter name="datasource">portal</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">DatasourceListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Tagging/DatasourceListComponent.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>		
+	<portlet>
+		<portlet-name>Actions</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir"
+				type="string">
+				path of the view definitions
+			</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/Actions</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Actions/ActionsList.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ButtonComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Actions/ButtonComponent.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>
+	<portlet>
+		<portlet-name>Pages</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir" type="string">
+				path of the view definitions
+			</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/Pages</parameter>
+			<parameter name="datasource">content</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">DatasourceListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Pages/DatasourceListComponent.vm</parameter>
+				</parameters>
+			</template>
+<!-- 			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plugins/FormPlugin2/Plain.vm</parameter>
+				</parameters>
+			</template>-->
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ButtonComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Actions/ButtonComponent.vm</parameter>
+				</parameters>
+			</template>			
+		</templates>
+	</portlet>	
+	<portlet>
+		<portlet-name>GenticsLoginModule</portlet-name>
+		<parameter-description>
+			<parameter-definition name="passwordregex" type="string">
+				password regular expression, validating the passwords
+			</parameter-definition>
+			<parameter-definition name="loginregex" type="string">
+				user id regular expression
+			</parameter-definition>
+			<parameter-definition name="passworddescription"
+				type="string">
+				dictionary code for error in password
+			</parameter-definition>
+			<parameter-definition name="logindescription"
+				type="string">
+				dictionary code for error in user
+			</parameter-definition>
+			<parameter-definition name="defaultlogin" type="string">
+				init value of the user field
+			</parameter-definition>
+		</parameter-description>
+		<templates>
+			<template id="main">
+				<source><![CDATA[
+$form
+		]]></source>
+			</template>
+			<template id="loggedin">
+				<source><![CDATA[
+#set($welcome = $portal.i18n("login.welcome"))##
+$welcome.setParameter("firstname", $user.firstname)##
+#set ($hash = $portal.imps.string.md5("$!user.email"))##
+<img src="http://www.gravatar.com/avatar/$hash?s=47" alt="$user.firstname $user.lastname" title="$user.firstname $user.lastname" />
+<h1>$welcome</h1>
+<a href="$logouturl">$portal.i18n("login.logout")</a>
+<br /><br />
+			]]></source>
+			</template>
+		</templates>
+	</portlet>
+	<portlet>
+		<portlet-name>LoginTools</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir"
+				type="string">
+				path of the view definitions
+			</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/LoginTools</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/LoginTools/Form.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>
+	<portlet>
+		<portlet-name>Search</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir"
+				type="string">path of the view definitions</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/Search</parameter>
+		</start-parameters>
+		<templates>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">ViewPlugin</class>
+					<class id="windowstate">normal</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Search/SearchView.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">ViewPlugin</class>
+					<class id="windowstate">maximized</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Search/ResultView.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">plugins/FormPlugin2/ListComponent.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">ButtonComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Search/ButtonComponent.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">TextComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Search/TextComponent.vm</parameter>
+				</parameters>
+			</template>
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+					<class id="component">DatasourceListComponent</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Search/DatasourceListComponent.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>
+	<portlet>
+		<portlet-name>Language</portlet-name>
+		<parameter-description>
+			<parameter-definition name="viewplugin.viewbasedir"
+				type="string">path of the view definitions</parameter-definition>
+		</parameter-description>
+		<start-parameters>
+			<parameter name="viewplugin.viewbasedir">WEB-INF/views/Language</parameter>
+		</start-parameters>
+		<templates>
+			<!-- By uncommenting the template Form.vm, the language portlet will let the user choose the portal and content languages independently -->
+			<!-- template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Language/Form.vm</parameter>
+				</parameters>
+			</template -->
+			<!-- By uncommenting the template SingleLangForm.vm, the language portlet will let the user choose a single language,
+			  which is used as portal and content language
+			 -->
+			<template loader="gentics.portletapp">
+				<classes>
+					<class id="plugin">formplugin2</class>
+				</classes>
+				<parameters>
+					<parameter id="filename">modules/Language/SingleLangForm.vm</parameter>
+				</parameters>
+			</template>
+		</templates>
+	</portlet>
+</portlet-app>

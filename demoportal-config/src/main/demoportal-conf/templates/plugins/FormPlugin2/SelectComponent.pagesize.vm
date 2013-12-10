@@ -1,0 +1,12 @@
+#set ($labelclass = " class='dsl_addons'")
+#set ($labelstyle = "")
+#if ($component.properties.labelstyle && $component.properties.labelstyle != "")
+  #set ($labelstyle = " style='$component.properties.labelstyle'")
+#end
+#if($component.multivalue)<input type="hidden" name="$component.name" value=""/>#end
+#if ($component.label)<label${labelstyle}${labelclass} for="$label">$component.label:#if($component.optional == false)*#end</label> #end
+<select #if ($component.properties.style && $component.properties.style != "")style="$component.properties.style"#end #if ($select.error)class="alert"#end #if($component.multivalue)multiple="multiple"#end #if($component.hassize)size="$component.size"#end #if (!$select.enabled)disabled="disabled" #end id ="$component.label" name="$component.name" #if($select.help)onmouseover="doTooltip(event,'$select.help');"#end #if($select.help)onmouseout="hideTip();"#end #if($component.properties.autosubmit && $component.properties.autosubmit == "true")onchange="this.form.submit();"#end>
+#foreach ($item in $component.items)
+<option#if ($item.selected) selected#end#if ($component.hasvalues) value="$item.value"#end>$item.name</option>
+#end
+</select>

@@ -1,0 +1,12 @@
+#set ($cssclass = "")
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+  #set ($cssclass = $component.properties.cssclass)
+#end
+
+#if ($label)<label for="$label">$label:</label> #end
+<select#if ($component.properties.style && $component.properties.style != "") style="$component.properties.style"#end #if (!$select.enabled) disabled #end id =$label name="$name" class="$cssclass" #if($select.help)onmouseover="doTooltip(event,'$select.help');"#end #if($select.help)onmouseout="hideTip();"#end" />
+#foreach ($item in $items)
+<option#if ($item.selected) selected#end#if ($hasvalues) value="$item.value"#end>$item.name</option>
+#end
+</select>
+<div class="alert">#if ($select.error)$select.errortext#end</div>

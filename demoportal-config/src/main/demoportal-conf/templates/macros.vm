@@ -1,0 +1,35 @@
+#macro(langfallback $folder $language)
+#set($foldername = "")##
+#set($name_lang = "name_${language}")##
+#if(${folder.get($name_lang)})##
+#set($foldername = $!{folder.get($name_lang)})##
+#end##
+#if("$!foldername" == "")##
+#set($foldername = $folder.name)##
+#end##
+$foldername
+#end
+
+#macro(pageversion $number $timestamp $firstname $lastname)
+#set($version = $portal.i18n("content.version"))##
+$version.setParameter("number", $number)##
+$version.setParameter("date", $portal.imps.date.format($portal.imps.date.fromTimestamp($timestamp), "SHORT"))##
+$version.setParameter("timestamp", $timestamp)##
+$version.setParameter("firstname", $firstname)##
+$version.setParameter("lastname", $lastname)##
+$version
+#end
+
+#macro(lastupdate $timestamp $firstname $lastname $type)
+#set($lastupdate = $portal.i18n("content.lastupdate$type"))##
+$lastupdate.setParameter("date", $portal.imps.date.format($portal.imps.date.fromTimestamp($timestamp), "SHORT"))##
+$lastupdate.setParameter("firstname", $firstname)##
+$lastupdate.setParameter("lastname", $lastname)##
+$lastupdate
+#end
+
+#macro(statusinfo $status)
+#if("$status" == "0")
+<div class="message info">$portal.i18n("content.unpublished")</div>
+#end
+#end

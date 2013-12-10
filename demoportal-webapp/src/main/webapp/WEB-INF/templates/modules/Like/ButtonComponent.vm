@@ -1,0 +1,76 @@
+<script type="text/javascript">
+#set ($portal.imps.query.rule = "object.obj_type == 36000 && object.forcontentid == '$portal.modules.content.contentid'")
+#set ($likes = $portal.imps.query.result)
+#set ($portal.imps.query.rule = "object.obj_type == 36000 && object.forcontentid == '$portal.modules.content.contentid' && object.useremail == '$portal.user.email'")
+#set ($youLike = $portal.imps.query.result)
+var Like = {
+	/**
+	 * current number of likes for this content
+	 */
+	likes : $likes.size(),
+
+	/**
+	 * remember if the user liked this content before,
+	 */
+	youLike : $youLike.size(),
+
+	/**
+	 * initializes the current like status and renders the content
+	 */
+	init : function () {
+		var html = "";
+		if (this.youLike == 0) {
+			html += '<a href="#like" onclick="Like.like()">$portal.imps.i18n.translate("l_like")</a>';
+		}
+		html += this.renderLikeInfo();
+		jQuery("span.like").html(html);
+	},
+
+	/**
+	 * render "n people like this" correctly in all it's variants 
+	 */
+	renderLikeInfo : function () {
+		var html;
+		if (this.youLike == 0) {
+			// only others liked this content so far
+			if (this.likes == 0 || this.likes > 1) {
+				html = " (" + this.likes + " $portal.imps.i18n.translate("l_people_like_this"))";
+			} else {
+				html = " ($portal.imps.i18n.translate("l_one_likes_this"))";
+			}
+		} else {
+			// you like this content
+			var otherLikes = this.likes - 1;
+			if (otherLikes == 0) {
+				html = "$portal.imps.i18n.translate("l_you_like")";
+			} else if (otherLikes == 1) {
+				html = "$portal.imps.i18n.translate("l_you") $portal.imps.i18n.translate("l_and") "
+					+ "$portal.imps.i18n.translate("l_one_likes_this")";
+			} else {
+				html = "$portal.imps.i18n.translate("l_you") $portal.imps.i18n.translate("l_and") "
+				+ otherLikes + " $portal.imps.i18n.translate("l_and_others")";
+			}
+		}
+		return html;
+	},
+	
+	/**
+	 * call this function to express your admiration for the current content
+	 */
+	like : function () {
+		jQuery.get("$form.callableactions.like.resourceUrl");
+		this.likes++;
+		this.youLike++;
+		var el = jQuery("span.like");
+		// update info with cool fading effect
+		el.css("display", "none");
+		this.init();
+		el.fadeIn();
+	}
+};
+
+// initialize the Like class
+jQuery(document).ready(function () {
+	Like.init();
+});
+</script>

@@ -1,0 +1,23 @@
+## classdefinition
+#set ($cssclass = "")
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+	#set ($cssclass = " $component.properties.cssclass")
+#end
+#if ($component.properties.group && $component.properties.group!="")
+	<fieldset class="listGroup" #if ($component.properties.style && $component.properties.style != "") style="$component.properties.style" #end>
+	#if($component.label)
+		<legend #if ($component.properties.labelstyle && $component.properties.labelstyle != "") style="$component.properties.labelstyle" #end>$component.label</legend>
+	#end
+#end
+<div class="formbox${cssclass}">
+#if($component.label && !$component.properties.group)
+	<h2>$component.label</h2>
+#end
+#foreach ($item in $items)
+	<div class="formrow">$item</div>
+#end
+</div>
+<div class="nofloat"></div>
+#if ($component.properties.group && $component.properties.group!="")
+	</fieldset>
+#end

@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>demoportal</artifactId>
+		<groupId>com.gentics</groupId>
+		<version>1.2.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>demoportal-genticsimagestore-webapp</artifactId>	
+	<packaging>war</packaging>
+	<name>[Demo Portal] GenticsImageStore Webapp</name>
+
+	<description>This is an overlay for the GenticsImageStore webapp</description>
+	<url>http://www.gentics.com</url>
+
+	<properties>
+		<m2eclipse.wtp.contextRoot>GenticsImageStore</m2eclipse.wtp.contextRoot>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.build.timestamp.format>yyyyMMdd-HHmmss</maven.build.timestamp.format>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.gentics</groupId>
+			<artifactId>genticsimagestore-webapp</artifactId>
+			<version>${portalnode.version}</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+
+</project>

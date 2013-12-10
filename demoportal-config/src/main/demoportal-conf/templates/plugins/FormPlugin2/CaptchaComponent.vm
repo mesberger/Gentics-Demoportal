@@ -1,0 +1,8 @@
+#if ($component.label)<label for="$label">$component.label:#if($component.optional == false)*#end</label> #end
+<div>
+<div>
+<img src="$component.captchaurl" width="$component.captchawidth" height="$component.captchaheight" />
+</div>
+<input #if ($component.error)class="alert"#end type="text" name="$component.name" #if($component.help)onmouseover="doTooltip(event,'$component.help');"#end #if($component.help)onmouseout="hideTip();"#end />
+</div>
+<div class="alert">#if ($component.error)$component.errortext#end</div>

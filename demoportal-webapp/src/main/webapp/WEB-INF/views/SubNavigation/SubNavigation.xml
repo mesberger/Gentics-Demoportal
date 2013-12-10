@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="SubNavigation"
+   xmlns="http://www.gentics.com/xml/ns/portal/view">
+    <callableactions>
+    	<callableaction id="startfolder">
+    		<actions>
+    			<action id="startfolderaction" class="com.gentics.demoportal.StartfolderAction">
+    				<parameters>
+    					<parameter id="folderContentId" mapped="module.parameters.folderid" />
+    					<parameter id="rootContentId" mapped="portal.properties.navrootfolder_id"/>
+    				</parameters>
+    			</action>
+    			<action class="GeneralViewAction">
+    				<parameters>
+    					<parameter id="set">view.properties.startfolder = actions.startfolderaction.contentid</parameter>
+    					<parameter id="set">view.components.subnav.reload = true</parameter>
+    					<parameter id="set">view.components.subnav.open = []</parameter>
+    					<parameter id="set">view.components.subnav.openpath = actions.startfolderaction.folderid</parameter>
+    					<parameter id="set">view.components.subnav.properties.folderid = actions.startfolderaction.folderid</parameter>
+    					<parameter id="set">view.components.subnav.properties.contentid = actions.startfolderaction.contentid</parameter>
+    				</parameters>
+    			</action>
+    		</actions>
+    	</callableaction>
+    </callableactions>
+	<onview>
+		<actions>
+			<action class="RenderTemplateAction" id="folder">
+				<parameters>
+					<parameter id="folder" mapped="portal.modules.content.properties.folder_id"/>
+					<parameter id="language" mapped="portal.modules.content.parameters.language"/>
+					<parameter id="template"><![CDATA[#langfallback($folder $language)]]></parameter>
+				</parameters>
+			</action>
+			<action class="GeneralViewAction">
+				<parameters>
+					<parameter id="set">view.components.newfolder.properties.info = concat("in ", actions.folder.template)</parameter>
+				</parameters>
+			</action>
+		</actions>
+	</onview>
+	<datasourcetreecomponent id="subnav">
+		<rootrule>object.folder_id == view.properties.startfolder</rootrule>
+		<!--  kms -->
+		<noderule><![CDATA[object.obj_type == 10002 && object.navhidden == 0 && object.permgroups_view CONTAINSONEOF portal.user.groups]]></noderule>
+		<relations>
+			<relation attribute="subfolder_id" reverseattribute="folder_id"></relation>
+		</relations>
+		<sortby>object.name</sortby>
+		<sortorder>ASC</sortorder>
+	</datasourcetreecomponent>
+	<listcomponent id="actions">
+		<visible><prule><![CDATA[portal.user.isloggedin && portal.modules.content.backendmode && (portal.modules.content.properties.folder_id.permgroups_foldercreate CONTAINSONEOF portal.user.groups)]]></prule></visible>
+		<content>
+			<!-- "Create new folder"-Button -->
+			<buttoncomponent id="newfolder">
+				<label>actions.newfolder</label>
+				<properties>
+					<property id="info"></property>
+					<property id="js">showCreateFolder(); return false;</property>
+					<property id="title">actions.newfolder.title</property>
+				</properties>
+			</buttoncomponent>
+		</content>
+	</listcomponent>
+	<listcomponent id="relocate">
+		<content>
+			<textcomponent id="startpageid">
+				<label>startpageid</label>
+			</textcomponent>
+			<buttoncomponent id="switchtopage">
+				<label>switch</label>
+				<actions>
+					<action class="GeneralViewAction">
+						<parameters>
+							<parameter id="set">portal.modules.content.parameters.contentid = view.components.startpageid.data</parameter>
+						</parameters>
+					</action>
+				</actions>
+			</buttoncomponent>
+		</content>
+	</listcomponent>
+</view>

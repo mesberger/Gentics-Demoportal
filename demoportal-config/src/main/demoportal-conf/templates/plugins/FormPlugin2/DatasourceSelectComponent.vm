@@ -1,0 +1,90 @@
+##=================================================================================================
+## Gentics DataSourceTreeComponent
+##=================================================================================================
+#set ($labelclass = "")
+#if ($component.properties.labelclass && $component.properties.labelclass != "")
+  #set ($labelclass = " class='$component.properties.labelclass'")
+#end
+#set ($labelstyle = "")
+#if ($component.properties.labelstyle && $component.properties.labelstyle != "")
+  #set ($labelstyle = " style='$component.properties.labelstyle'")
+#end
+
+##-- Label ----------------------------------------------------------------------------------------
+#if ($component.label)
+<label${labelclass}${labelstyle} for="$component.name">
+  $component.label:#if ($component.optional == false)*#end
+</label>
+#end
+
+## classdefinition
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+    #set ($cssclass = $component.properties.cssclass)
+#end
+
+##-- DataSourceSelectComponent --------------------------------------------------------------------
+#if ($component.multivalue) <input type="hidden" name="$component.name" value=""/> #end
+<select
+  ## valuesize
+  #if ($component.properties.size && $component.properties.size != "") 
+    #set ($size = $component.properties.size) 
+  #else
+    #if ($component.multivalue)
+      #set ($size = "5")
+    #else 
+      #set ($size = "1")
+    #end    
+  #end
+  
+  ## multivalue
+  #if ($component.multivalue)
+    size=${size} 
+    multiple="multiple" 
+  #else
+    size=${size}  
+  #end 
+
+  ## enabled / disabled
+  #if (!$component.enabled) disabled #end 
+
+  ## id
+  id = "$component.name" 
+  
+  ## name
+  name="$component.name"  
+  
+  ## style
+  #if ($component.properties.style && $component.properties.style != "") style="$component.properties.style"  #end  
+  
+  ## class  
+  class="${cssclass}#if ($component.error) alert#end" 
+
+  ## onMouseOver 
+  #if($component.help)onmouseover="doTooltip(event,'$component.help');"#end 
+
+  ## onMouseOut   
+  #if($component.help)onmouseout="hideTip();"#end
+
+  ## autoSubmit
+  #if ($component.properties.autosubmit && $component.properties.autosubmit == "true") onchange="this.form.submit();" #end >
+
+  ## if not multivalue: first entry
+  #if (!$component.multivalue) <option value="">$portal.i18n("-- please choose --")</option> #end
+
+  ## values
+  #foreach ($item in $component.items)
+    <option #if ($item.selected) selected #end value="$item.value">$item.name</option>
+  #end
+</select>
+
+## Focus
+#if ($component.focus)
+  <script language="javascript">
+    <!--
+    document.getElementById("$component.name").focus();
+    -->
+  </script>
+#end
+
+##-- ErrorText ------------------------------------------------------------------------------------
+<div class="alert">#if ($component.error)$component.errortext#end</div>

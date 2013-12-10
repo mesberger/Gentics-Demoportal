@@ -1,0 +1,101 @@
+#macro( renderChild $child)
+#if($component.properties.display && $child)$!portal.imps.velocityTools.render.eval($ctx, $component.properties.display)#else$!{child.name}#end
+#end
+
+#macro( treeLayer $childrenList $layer )
+<ul>
+##comment go through all entries
+#foreach ( $child in $childrenList )
+<li style="margin-left:10px">
+#if( $child.visible )
+## #foreach($i in [0 .. $layer])&nbsp;&nbsp;#end
+
+#if( $child.flappable)
+#if ( $child.flappedOpen )
+## node is open
+	<a href="$child.flapLinkClose">-</a> #if($child.defaultActionLink && $component.enabled)<a href="$child.defaultActionLink">#renderChild($child)</a>#else#renderChild($child)#end
+	#foreach($action in $child.nodeActions)
+	#if($action.visible)
+	#if($action.enabled && $component.enabled)
+			#if($action.properties.icon)
+<a href="$action.url"><img src="$action.properties.icon" alt="$action.label" title="$action.label" /></a>
+	#else
+			<a href="$action.url">$action.label</a>
+	#end
+	#else
+	#if($action.properties.icon)
+<img src="$action.properties.icon" alt="$action.label" title="$action.label" class="action_disabled"/>
+	#else
+	$action.label
+	#end
+	#end
+	#end
+#end<br/>
+#set ( $subChildren = $child.children )
+	#set ( $layer = $layer + 1 )
+	#if( $subChildren && $layer )
+	#treeLayer( $subChildren $layer )
+    #end
+#set ( $layer = $layer - 1 )
+#else
+## node is closed
+<a href="$child.flapLinkOpen">+</a> #if($child.defaultActionLink && $component.enabled)<a href="$child.defaultActionLink">#renderChild($child)</a>#else#renderChild($child)#end
+#foreach($action in $child.nodeActions)
+	#if($action.visible)
+	#if($action.enabled && $component.enabled)
+			#if($action.properties.icon)
+<a href="$action.url"><img src="$action.properties.icon" alt="		$action.label" title="		$action.label" /></a>
+	#else
+		<a href="$action.url">$action.label</a>
+	#end
+	#else
+		#if($action.properties.icon)
+<img src="$action.properties.icon" alt="		$action.label" title="		$action.label" class="action_disabled"/>
+	#else
+	$action.label
+	#end
+	#end
+	#end
+#end<br/>
+#end
+#else
+## node is not flappable (has no children or flapping disabled)
+#if($child.defaultActionLink && $component.enabled)<a href="$child.defaultActionLink">#renderChild($child)</a>#else#renderChild($child)#end
+#foreach($action in $child.nodeActions)
+	#if($action.visible)
+	#if($action.enabled && $component.enabled)
+		#if($action.properties.icon)
+<a href="$action.url"><img src="$action.properties.icon" alt="		$action.label" title="		$action.label" /></a>
+	#else
+	<a href="$action.url">$action.label</a>
+	#end
+	#else
+	#if($action.properties.icon)
+<img src="$action.properties.icon" alt="		$action.label" title="		$action.label" class="action_disabled"/>
+	#else
+	$action.label
+	#end
+	#end
+	#end
+#end<br/>
+	#set ( $subChildren = $child.children )
+	#set ( $layer = $layer + 1 )
+	#if( $subChildren && $layer )
+		<li style="margin-left:10px">#treeLayer( $subChildren $layer )</li>
+    #end
+	#set ( $layer = $layer - 1 )
+
+#end
+#end
+</li>
+#end
+</ul>
+#end
+
+#set ( $startlayer = 0 )
+
+#treeLayer( $component.tree.children $startlayer  )
+	
+	#if($paging)
+	#paging($paging)
+	#end

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="Result" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<datasourcelistcomponent id="result">
+		<datasource>false</datasource>
+		<columns>
+			<column id="name">
+				<label>name</label>
+				<actions>
+					<action class="DownloadAction">
+						<prule>data.object.obj_type == 10008</prule>
+						<parameters>
+							<parameter id="component">
+								filedownload
+							</parameter>
+							<parameter id="content"
+								mapped="data.object.binarycontent" />
+							<parameter id="contenttype"
+								mapped="data.object.mimetype" />
+							<parameter id="filename"
+								mapped="data.object.name" />
+						</parameters>
+					</action>
+					<action class="GeneralViewAction">
+						<prule>object.obj_type != 10008</prule>
+						<parameters>
+							<parameter id="set">portal.page.positions.center.portlets = ["content"]</parameter>
+							<parameter id="set">portal.modules.content.parameters.contentid = data.object.contentid</parameter>
+						</parameters>
+					</action>
+				</actions>
+			</column>
+			<column id="content">
+				<label>content</label>
+				<properties>
+					<property id="style"><![CDATA[float:none;]]></property>
+					<property id="suffix"><![CDATA[]]></property>
+				</properties>
+			</column>
+		</columns>
+	</datasourcelistcomponent>
+</view>

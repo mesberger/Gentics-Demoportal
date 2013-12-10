@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="Tagging" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<callableactions>
+		<!-- 
+			Add a tag to the CR			
+			/Portal.Node/portal?gentics.rs=tagging.Tagging&gentics.rsid=addTag&gentics.pb=center 
+		-->
+		<callableaction id="addTag">
+			<actions>
+				<!-- adds a tag to the current content -->
+				<action class="DatasourceAction" id="create">
+					<prule>portal.user.isloggedin</prule>
+					<parameters>
+						<parameter id="operation">create</parameter>
+						<parameter id="obj_type">37000</parameter>
+						<parameter id="forcontentid" mapped="portal.modules.content.contentid" />
+						<parameter id="name" mapped="portal.request.parameters.tag" />
+					</parameters>
+				</action>
+				<action class="DatasourceAction" id="save">
+					<prule>portal.user.isloggedin</prule>
+					<parameters>
+						<parameter id="operation">save</parameter>
+						<parameter id="object" mapped="actions.create.object" />
+					</parameters>
+				</action>
+			</actions>
+		</callableaction>
+		<!-- 
+			Removes a tag			
+			/Portal.Node/portal?gentics.rs=tagging.Tagging&gentics.rsid=removeTag&gentics.pb=center 
+		-->
+		<callableaction id="removeTag">
+			<actions>
+				<!-- adds a tag to the current content -->
+				<action class="DatasourceAction" id="load">
+					<prule>portal.user.isloggedin</prule>
+					<parameters>
+						<parameter id="operation">load</parameter>
+						<parameter id="rule"><![CDATA[object.obj_type == 37000 && object.forcontentid == portal.modules.content.contentid && object.name == portal.request.parameters.tag]]></parameter>
+					</parameters>
+				</action>
+				<action class="DatasourceAction" id="delete">
+					<prule>portal.user.isloggedin</prule>
+					<parameters>
+						<parameter id="operation">delete</parameter>
+						<parameter id="object" mapped="actions.load.object" />
+					</parameters>
+				</action>
+			</actions>
+		</callableaction>
+	</callableactions>
+	<!-- lists all tags for this page; a special template is applied which renders the autosuggest box -->
+	<datasourcelistcomponent id="tags">
+		<rule><![CDATA[object.obj_type == 37000 && object.forcontentid == portal.modules.content.contentid]]></rule>
+		<sortby>object.name</sortby>
+		<columns></columns>
+	</datasourcelistcomponent>
+</view>

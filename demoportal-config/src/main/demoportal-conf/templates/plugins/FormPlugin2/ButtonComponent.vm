@@ -1,0 +1,37 @@
+##=================================================================================================
+## Gentics ButtonComponent
+##=================================================================================================
+
+## classdefinition
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+  #set ($cssclass = $component.properties.cssclass)
+#else
+  #set ($cssclass = "button")
+#end
+
+## for historic reasons iterate buttons. usually only 1 button - as defined in the buttoncomponent - is available.
+#foreach ( $button in $component.buttons )
+  #if($button.visible)
+  
+    ## label
+    #if ($component.properties.label && $component.properties.label != "")
+      #set ($label = $component.properties.label)
+    #else 
+      #set ($label = $button.label)
+    #end
+     
+    <input id="$button.name" value="$label" name="$button.name" type="submit"
+      ## enabled / disabled
+      #if (!$component.enabled) 
+        disabled 
+        #set ($cssclass = $cssclass + "disabled")
+      #end     
+      ## class
+      class="${cssclass}"  
+      ## style
+      #if ($component.properties.style && $component.properties.style != "") style="$component.properties.style"  #end     
+      ## accesskey 
+      #if ($component.properties.accesskey) accesskey="$component.properties.accesskey" #end
+    />
+  #end
+#end

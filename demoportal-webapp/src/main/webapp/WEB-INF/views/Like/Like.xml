@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="Like" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<callableactions>
+		<!-- /Portal.Node/portal?gentics.rs=like.Like&gentics.rsid=like&gentics.pb=center -->
+		<callableaction id="like">
+			<actions>
+				<!-- like the content which is currently selected -->
+				<action class="RenderTemplateAction" id="username">
+					<parameters>
+						<parameter id="template">$portal.user.firstname $portal.user.lastname</parameter>
+					</parameters>
+				</action>
+				<action class="DatasourceAction" id="create">
+					<parameters>
+						<parameter id="operation">create</parameter>
+						<parameter id="obj_type">36000</parameter>
+						<parameter id="forcontentid" mapped="portal.modules.content.contentid" />
+						<parameter id="userid" mapped="portal.user.id" />
+						<parameter id="username" mapped="actions.username.template" />
+						<parameter id="useremail" mapped="portal.user.email" />
+					</parameters>
+				</action>
+				<action class="DatasourceAction" id="save">
+					<parameters>
+						<parameter id="operation">save</parameter>
+						<parameter id="object" mapped="actions.create.object" />
+					</parameters>
+				</action>
+			</actions>
+		</callableaction>
+	</callableactions>
+	<!-- this is actually not a button, but a script part which does all the like stuff -->
+	<buttoncomponent>
+		<label>Like!</label>
+	</buttoncomponent>
+</view>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<portlet-entities xmlns="http://www.gentics.com/xml/ns/portal/portletentities">
+	<reactions>
+		<!--  kms -->
+		<reaction event="portal.modules.content.onSelect">
+			do (
+				portal.modules.content.parameters.contentid = event.properties.contentid,
+				portal.page.id = "content",
+				if (portal.modules.content.properties.folder_id.wikidocs == "1", portal.page.id = "wikidocs"),
+				if (portal.modules.content.properties.folder_id.blog == "1", portal.page.id = "portalpage_small"),
+				if (portal.modules.content.properties.fullpagemode == "1", portal.page.id = "fullpagemode")
+			)
+		</reaction>
+		<!-- determine startfolder, set startfolder, open path -->
+		<reaction event="portal.modules.content.onParameterChange">
+			do (
+				portal.page.id = "content",
+				if (portal.modules.content.properties.folder_id.wikidocs == "1", portal.page.id = "wikidocs"),
+				if (portal.modules.content.properties.folder_id.blog == "1", portal.page.id = "portalpage_small"),
+				if (portal.modules.content.properties.fullpagemode == "1", portal.page.id = "fullpagemode"),
+				portal.modules.subnav.parameters.folderid = portal.modules.content.properties.folder_id,
+				docallableaction("subnav", "SubNavigation", "startfolder"),
+				portal.modules.topnav.plugins.TopNavigation.components.topnav.properties.contentid = portal.modules.subnav.plugins.SubNavigation.components.subnav.properties.contentid,
+				portal.modules.topnav.plugins.TopNavigation.components.topnav.properties.folderid = portal.modules.subnav.plugins.SubNavigation.components.subnav.properties.folderid
+			)
+		</reaction>
+		<reaction event="portal.modules.content.onChange">
+			do (
+				portal.page.id = "content",
+				if (portal.modules.content.properties.folder_id.wikidocs == "1", portal.page.id = "wikidocs"),
+				if (portal.modules.content.properties.folder_id.blog == "1", portal.page.id = "portalpage_small"),
+				if (portal.modules.content.properties.fullpagemode == "1", portal.page.id = "fullpagemode"),
+				portal.modules.subnav.parameters.folderid = portal.modules.content.properties.folder_id,
+				docallableaction("subnav", "SubNavigation", "startfolder"),
+				portal.modules.topnav.plugins.TopNavigation.components.topnav.properties.contentid = portal.modules.subnav.plugins.SubNavigation.components.subnav.properties.contentid,
+				portal.modules.topnav.plugins.TopNavigation.components.topnav.properties.folderid = portal.modules.subnav.plugins.SubNavigation.components.subnav.properties.folderid
+			)
+		</reaction>
+		<!-- Reaction to change the portal language (with fallback when requested language does not exist -->
+ 		<reaction event="portal.events.onPortalLanguageChange">
+			do (
+				portal.properties.langids = foreach(portal.languages, "language", language.id),
+				portal.language.id = if(portal.properties.langids CONTAINSONEOF event.properties.language, event.properties.language, fromArray(portal.properties.langids, 0))
+			)
+		</reaction>
+		<!-- Reaction to change the content language -->
+		<reaction event="portal.events.onContentLanguageChange">
+			portal.modules.content.parameters.language = event.properties.language
+		</reaction>
+		<!--  Reaction to change portal and content language -->
+		<reaction event="portal.events.onLanguageChange">
+			do (
+				portal.properties.langids = foreach(portal.modules.content.properties.content_languages, "language", language),
+				portal.language.id = if(portal.properties.langids CONTAINSONEOF event.properties.language, event.properties.language, fromArray(portal.properties.langids, 0)),
+				portal.modules.content.parameters.language = event.properties.language
+			)
+		</reaction>
+		<!--  Reaction to translating the given content -->
+		<reaction event="portal.events.onTranslateContent">
+			do (
+				portal.properties.langids = foreach(portal.modules.content.properties.content_languages, "language", language),
+				portal.language.id = if(portal.properties.langids CONTAINSONEOF event.properties.language, event.properties.language, fromArray(portal.properties.langids, 0)),
+				portal.modules.content.parameters.language = event.properties.language,
+				portal.modules.actions.session.portletscope.translate = portal.modules.content.properties.obj_id,
+				portal.modules.actions.session.portletscope.language = event.properties.language,
+				docallableaction("actions", "Actions", "translate")
+			)
+		</reaction>
+		<!-- Login / Logout events -->
+		<reaction event="portal.events.doShowLogin">
+			portal.page.id = "login"
+		</reaction>
+		<reaction event="portal.events.onUserLogin">
+			portal.page.id = "content"
+		</reaction>
+	</reactions>
+	<pnodes>
+		<pnode type="GCN5_Portal/TopNavigation" id="topnav" />
+		<pnode type="GCN5_Portal/SubNavigation" id="subnav" />
+		<pnode type="GCN5_Portal/GenticsLoginModule" id="login" />
+		<pnode type="GCN5_Portal/LoginTools" id="logintools" />
+		<pnode type="GCN5_Portal/Comments" id="comments">
+			<parameters>
+				<parameter name="datasource">portal</parameter>
+			</parameters>
+		</pnode>
+		<pnode type="GCN5_Portal/Like" id="like" />
+		<pnode type="GCN5_Portal/Tagging" id="tagging" />
+		<pnode type="GenticsContentPortlet" id="content">
+			<parameters>
+				<parameter name="datasource">content</parameter>
+				<parameter name="contentid"><pobject>portal.properties.homepage_id</pobject></parameter>
+				<parameter name="backendurl"><pobject>portal.properties.gcnbackendurl</pobject></parameter>
+				<parameter name="portletapp_prefix"><pobject>portal.properties.portletapp_prefix</pobject></parameter>
+				<parameter name="templateEngine">true</parameter>
+				<parameter name="languagemanagement">true</parameter>
+				<parameter name="language">en</parameter>
+				<parameter name="pathlinks">true</parameter>
+				<parameter name="nodeidinpathlinks">false</parameter>
+				<parameter name="rule"><![CDATA[object.permgroups_view CONTAINSONEOF portal.user.groups]]></parameter>
+				<parameter name="template_noperm">$portal.i18n("content.nopermission")</parameter>
+			</parameters>
+		</pnode>
+		<pnode type="GCN5_Portal/Actions" id="actions">
+			<isvisible><prule>portal.user.isloggedin AND (portal.modules.content.properties.folder_id.permgroups_pagecreate CONTAINSONEOF portal.user.groups OR portal.modules.content.properties.permgroups_edit CONTAINSONEOF portal.user.groups)</prule></isvisible>
+			<parameters>
+				<parameter name="datasource">content</parameter>
+			</parameters>
+		</pnode>
+		<pnode type="GCN5_Portal/Pages" id="pages">
+			<!-- TODO: only visible in edit mode! -->
+			<isvisible><prule>portal.user.isloggedin AND (portal.modules.content.properties.folder_id.permgroups_pagecreate CONTAINSONEOF portal.user.groups OR portal.modules.content.properties.permgroups_edit CONTAINSONEOF portal.user.groups)</prule></isvisible>
+			<!-- <isvisible><prule>portal.modules.content.parameters.backendmode == true</prule></isvisible>-->
+			<parameters>
+				<parameter name="datasource">content</parameter>
+			</parameters>
+			
+		</pnode>
+		<pnode type="GCN5_Portal/Search" id="search">
+			<style>simple</style>
+			<parameters>
+				<parameter name="count">10</parameter>
+				<parameter name="datasource">content</parameter>
+			</parameters>
+			<reactions>
+				<reaction event="portal.events.doSearch"><![CDATA[
+					do(
+						portal.modules.search.parameters.query = event.properties.query,
+						if(!isempty(event.properties.count),
+							portal.modules.search.parameters.count = event.properties.count,
+							portal.modules.search.parameters.count = portal.modules.search.parameters.count),
+						if(!isempty(event.properties.start),
+							portal.modules.search.parameters.start = event.properties.start,
+							portal.modules.search.parameters.start = 0),
+						if(!isempty(event.properties.sorting),
+							portal.modules.search.parameters.sorting = event.properties.sorting,
+							portal.modules.search.parameters.sorting = ""),
+						docallableaction( "search", "Search", "search" )
+					)
+				]]></reaction>
+				<reaction event="portal.modules.search.plugins.viewplugin.doSearch"><![CDATA[
+					do(
+						portal.modules.search.parameters.query = event.properties.query,
+						if(!isempty(event.properties.count),
+							portal.modules.search.parameters.count = event.properties.count,
+							portal.modules.search.parameters.count = portal.modules.search.parameters.count),
+						if(!isempty(event.properties.start),
+							portal.modules.search.parameters.start = event.properties.start,
+							portal.modules.search.parameters.start = 0),
+						if(!isempty(event.properties.sorting),
+							portal.modules.search.parameters.sorting = event.properties.sorting,
+							portal.modules.search.parameters.sorting = ""),
+						docallableaction( "search", "Search", "search" )
+					)
+				]]></reaction>
+			</reactions>
+		</pnode>
+		<pnode id="language" type="GCN5_Portal/Language">
+			<parameters>
+				<parameter name="datasource">content</parameter>
+			</parameters>
+		</pnode>
+	</pnodes>
+</portlet-entities>

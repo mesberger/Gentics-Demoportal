@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="Actions" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<callableactions>
+		<!-- /Portal.Node/portal?gentics.rs=actions.Actions&gentics.rsid=restoreVersion&gentics.pb=center -->
+		<callableaction id="restoreVersion">
+			<actions>
+				<!-- reload a content after a version has been restored by setting it to an 
+					arbitrary (existing!) content id, which will result in reloading the content 
+					when the page is requested the next time -->
+				<action class="EchoAction">
+					<parameters>
+						<parameter id="before" mapped="portal.modules.content.parameters.reload"/>
+					</parameters>
+				</action>
+				<action class="GeneralViewAction">
+					<parameters>
+						<parameter id="set">portal.modules.content.parameters.reload = portal.vars.timestamp</parameter>
+					</parameters>
+				</action>
+				<action class="EchoAction">
+					<parameters>
+						<parameter id="after" mapped="portal.modules.content.parameters.reload"/>
+					</parameters>
+				</action>
+			</actions>
+		</callableaction>
+		<callableaction id="translate">
+			<actions>
+				<action class="com.gentics.demoportal.TranslatePageAction" id="translate">
+					<parameters>
+						<parameter id="backend_url" mapped="portal.properties.gcnbackendurl"/>
+						<parameter id="sid" mapped="portal.user.sessionToken"/>
+						<parameter id="page_id" mapped="module.session.portletscope.translate"/>
+						<parameter id="language" mapped="module.session.portletscope.language"/>
+					</parameters>
+					<onsuccess>
+						<actions>
+							<action class="GeneralViewAction">
+								<parameters>
+									<parameter id="set">portal.modules.content.parameters.contentid = concat("10007.", actions.translate.id)</parameter>
+									<parameter id="set">portal.modules.content.parameters.backendmode = true</parameter>
+								</parameters>
+							</action>
+						</actions>
+					</onsuccess>
+				</action>
+			</actions>
+		</callableaction>
+	</callableactions>
+	<onview>
+		<actions>
+			<action class="GeneralViewAction">
+				<parameters>
+					<parameter id="set">view.components.edit.properties.info = portal.modules.content.properties.name</parameter>
+					<parameter id="set">module.session.portletscope.maypublish = (portal.modules.content.properties.permgroups_publish CONTAINSONEOF portal.user.groups)</parameter>
+				</parameters>
+			</action>
+		</actions>
+	</onview>
+	<buttoncomponent id="edit">
+		<visible><prule>portal.modules.content.parameters.backendmode != true</prule></visible>
+		<label>actions.edit</label>
+		<properties>
+			<property id="info"></property>
+			<property id="title">actions.edit.title</property>
+		</properties>
+		<actions>
+			<action class="GeneralViewAction">
+				<parameters>
+					<parameter id="set">portal.modules.content.parameters.prevcontentid = ""</parameter>
+					<parameter id="set">portal.modules.content.parameters.contentid = portal.modules.content.properties.contentid</parameter>
+					<parameter id="set">portal.modules.content.parameters.backendmode = true</parameter>
+				</parameters>
+			</action>
+		</actions>
+	</buttoncomponent>
+			<buttoncomponent id="add">
+				<visible><prule><![CDATA[(portal.modules.content.parameters.backendmode != true && portal.modules.content.properties.folder_id.permgroups_pagecreate CONTAINSONEOF portal.user.groups)]]></prule></visible>
+				<label>actions.add</label>
+				<properties>
+					<property id="info">actions.a_new_page</property>
+					<property id="title">actions.add.title</property>
+				</properties>
+				<actions>
+					<action class="com.gentics.demoportal.CreatePageAction" id="create">
+						<parameters>
+							<parameter id="backend_url" mapped="portal.properties.gcnbackendurl"/>
+							<parameter id="sid" mapped="portal.user.sessionToken"/>
+							<parameter id="folder_id" mapped="portal.modules.content.properties.folder_id.obj_id"/>
+							<parameter id="template_id" mapped="portal.properties.template_id"/>
+							<parameter id="language" mapped="portal.modules.content.parameters.language"/>
+						</parameters>
+						<onsuccess>
+							<actions>
+								<action class="GeneralViewAction">
+									<parameters>
+										<parameter id="set">portal.modules.content.parameters.backendmode = true</parameter>
+										<parameter id="set">portal.modules.content.parameters.prevcontentid = portal.modules.content.parameters.contentid</parameter>
+										<parameter id="set">portal.modules.content.parameters.contentid = concat("10007.", actions.create.id)</parameter>
+									</parameters>
+								</action>
+							</actions>
+						</onsuccess>
+					</action>
+				</actions>
+			</buttoncomponent>
+	
+	<buttoncomponent id="save">
+		<visible><prule>portal.modules.content.parameters.backendmode == true</prule></visible>
+		<label>actions.save</label>
+		<properties>
+			<property id="info"></property>
+			<property id="title">actions.save.title</property>
+			<property id="js">Aloha.require( "gcn/gcn-plugin" ).savePage({silent : true, async : false, onsuccess : savePageSuccess }); return false;</property>
+		</properties>
+	</buttoncomponent>
+	<buttoncomponent id="publish">
+		<visible><prule>portal.modules.content.parameters.backendmode == true</prule></visible>
+		<label>actions.publish</label>
+		<properties>
+			<property id="info"></property>
+			<property id="title">actions.publish.title</property>
+			<property id="js">var form = this.form; var param = "&amp;" + this.id + "=1"; Aloha.require( "gcn/gcn-plugin" ).publishPage( function() {form.action += param; form.submit();}); return false;</property>
+		</properties>
+		<actions>
+			<!-- clear the cache of the content object (since it was published and immediately written into the contentrepository) -->
+			<action class="DatasourceAction">
+				<parameters>
+					<parameter id="operation">clearcache</parameter>
+					<parameter id="contentid" mapped="portal.modules.content.parameters.contentid"/>
+				</parameters>
+			</action>
+			<action class="GeneralViewAction">
+				<parameters>
+					<parameter id="set">portal.modules.content.parameters.backendmode = false</parameter>
+				</parameters>
+			</action>
+		</actions>
+	</buttoncomponent>
+	<buttoncomponent id="cancel">
+		<visible><prule>portal.modules.content.parameters.backendmode == true</prule></visible>
+		<label>actions.cancel</label>
+		<properties>
+			<property id="info"></property>
+			<property id="title">actions.cancel.title</property>
+			<property id="js">var form = this.form; var param = "&amp;" + this.id + "=1"; Aloha.require( "gcn/gcn-plugin" ).cancelEdit( function() {form.action += param; form.submit();}); return false;</property>
+		</properties>
+		<actions>
+			<action class="GeneralViewAction">
+				<prule>!isempty(portal.modules.content.parameters.prevcontentid)</prule>
+				<parameters>
+					<parameter id="set">portal.modules.content.parameters.contentid = portal.modules.content.parameters.prevcontentid</parameter>
+				</parameters>
+			</action>
+			<action class="GeneralViewAction">
+				<parameters>
+					<parameter id="set">portal.modules.content.parameters.prevcontentid = ""</parameter>
+					<parameter id="set">portal.modules.content.parameters.backendmode = false</parameter>
+				</parameters>
+			</action>
+		</actions>
+	</buttoncomponent>
+	<buttoncomponent id="delete">
+	<!-- 
+	
+	PERMISSIONS!!!!!!
+	
+	
+	 -->
+		<visible><prule><![CDATA[portal.modules.content.parameters.backendmode == true && (portal.modules.content.properties.permgroups_delete CONTAINSONEOF portal.user.groups)]]></prule></visible>
+		<label>actions.delete</label>
+		<properties>
+			<property id="js">deletePage(); return false;</property>
+			<property id="title">actions.delete.title</property>
+		</properties>
+	</buttoncomponent>
+</view>

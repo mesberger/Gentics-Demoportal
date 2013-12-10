@@ -1,0 +1,84 @@
+##=================================================================================================
+## Gentics Date
+##=================================================================================================
+
+##Prefilling
+#if ($component.textcomponent.value && $component.textcomponent.value != "")
+  #set ($value = $component.textcomponent.value)
+#end
+#set ($labelclass = "")
+#if ($component.textcomponent.properties.labelclass && $component.textcomponent.properties.labelclass != "")
+  #set ($labelclass = " class='$component.textcomponent.properties.labelclass'")
+#end
+#set ($labelstyle = "")
+#if ($component.textcomponent.properties.labelstyle && $component.textcomponent.properties.labelstyle != "")
+  #set ($labelstyle = " style='$component.textcomponent.properties.labelstyle'")
+#end
+
+##-- Label ----------------------------------------------------------------------------------------
+<label${labelstyle}${labelclass} for="$component.textcomponent.name" >$component.textcomponent.label:#if ($component.textcomponent.optional == false)*#end</label>
+
+##-- TextComponent --------------------------------------------------------------------------------
+<input type="text"
+  ## size
+  #if ($component.textcomponent.properties.size && $component.textcomponentproperties.size != "") size="$component.textcomponent.properties.size" #end
+  
+  ## maxlength
+  #if ($component.textcomponent.properties.maxlength && $component.textcomponent.properties.maxlength != "") maxlength="$component.textcomponent.properties.maxlength" #end  
+  
+  ## style
+  #if ($component.textcomponent.properties.style && $component.textcomponent.properties.style != "") style="$component.textcomponent.properties.style"  #end  
+  
+  ## id
+  id="$component.textcomponent.name" 
+  
+  ## name
+  name="$component.textcomponent.name" 
+  
+  ## enabled / disabled  
+  #if (!$component.textcomponent.enabled) disabled #end
+  
+  ## value
+  value="$portal.imps.string.escapeHTML($value)" 
+  
+  ## classdefinition
+  #set ($cssclass = "")
+  #if ($component.textcomponent.properties.cssclass && $component.textcomponent.properties.cssclass != "")
+    #set ($cssclass = $component.textcomponent.properties.cssclass)
+  #end
+
+  ## class  
+  class="${cssclass}#if ($component.textcomponent.error) alert#end" 
+
+  ## onMouseOver 
+  onmouseover="#if($component.textcomponent.help)doTooltip(event,'$component.textcomponent.help'); #end" 
+  
+  ## onMouseOut   
+  onmouseout="#if($component.textcomponent.help)hideTip(); #end" />
+  <img src="/SamplePortletapplication/static/images/calendar.gif" id="${component.textcomponent.name}trigger" class="calendartrigger" title="Date selector" onmouseover="this.style.background='red';" onmouseout="this.style.background=''" />
+  <script type="text/javascript">
+  jQuery(document).ready(function(){
+    Calendar.setup({
+        inputField     :    "$component.textcomponent.name",      // id of the input field
+        ifFormat       :    "#if($component.properties.format)$component.properties.format#else%d.%m.%Y#end",       // format of the input field
+        showsTime      :    true,            // will display a time selector
+        button         :    "${component.textcomponent.name}trigger",   // trigger for the calendar (button ID)
+        singleClick    :    false,           // double-click mode
+        step           :    1                // show all years in drop-down boxes (instead of every other year as default)
+    });
+  });
+</script>
+
+## Focus
+#if ($component.focus)
+  <script language="javascript">
+    <!--
+    document.getElementById("$component.textcomponent.name").focus();
+    -->
+  </script>
+#end
+
+
+##-- ErrorText ------------------------------------------------------------------------------------
+<div class="alert">#if ($component.textcomponent.error)$component.textcomponent.errortext#end</div>
+

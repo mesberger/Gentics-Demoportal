@@ -1,0 +1,12 @@
+##=================================================================================================
+## Gentics ListComponent
+##=================================================================================================
+
+## template for a ListComponent to render subcomponents in a column (one on top of the other)
+<div>
+#if($component.label)<span class="floatleft label">$component.label:</span>#end
+#foreach ($item in $component.items)
+  $item
+#end
+</div>
+<div class="nofloat"></div>

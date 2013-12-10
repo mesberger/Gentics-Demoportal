@@ -1,0 +1,6 @@
+#if($component.label && $component.label.length() > 0)
+<label>$component.label:</label>
+#end
+#if($component.current)This is the current version of the object#end
+#if($component.past)Past version from $portal.imps.date.format($portal.imps.date.fromTimestamp($component.versiontimestamp))#end
+#if($component.future)Future version for $portal.imps.date.format($portal.imps.date.fromTimestamp($component.versiontimestamp))#end

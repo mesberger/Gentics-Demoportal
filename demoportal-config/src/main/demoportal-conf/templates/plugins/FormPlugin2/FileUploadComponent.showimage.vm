@@ -1,0 +1,1 @@
+${component.label}<br><img src="#esc($component.viewurl)" height="100" />

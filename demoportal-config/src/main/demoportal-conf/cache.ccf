@@ -1,0 +1,80 @@
+# DEFAULT CACHE REGION
+## maximum of 1000 objects per cache
+## objects will be removed if longer than 15 minutes idle
+## maximum object lifetime is 30 minutes
+## memory shrinker will actively remove old items every 5 minutes
+jcs.default=
+jcs.default.cacheattributes.MaxObjects=1000
+jcs.default.cacheattributes.UseMemoryShrinker=true
+jcs.default.cacheattributes.MaxMemoryIdleTimeSeconds=900
+jcs.default.cacheattributes.ShrinkerIntervalSeconds=300
+jcs.default.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.default.elementattributes.IsEternal=false
+jcs.default.elementattributes.MaxLifeSeconds=1800
+
+# PRE-DEFINED CACHE REGIONS
+
+## Cache Region for GenticsContentModule - Caches resized images.
+jcs.region.gentics-portal-contentmodule-image=
+jcs.region.gentics-portal-contentmodule-image.cacheattributes.MaxObjects=1000
+
+## Cache Region for Portal - Caches "boxframe" template of pnodes.
+jcs.region.gentics-portal-template-boxframe=
+jcs.region.gentics-portal-template-boxframe.cacheattributes.MaxObjects=1000
+
+## Cache Region for ViewPlugin - Caches parsed views.
+jcs.region.gentics-portal-viewplugin-views=
+jcs.region.gentics-portal-viewplugin-views.cacheattributes.MaxObjects=500
+
+## Cache Region for Portal - Caches portlets which enables Caching (Expiration Cache as described in JSR-168)
+jcs.region.gentics-portal-portletcache=
+jcs.region.gentics-portal-portletcache.cacheattributes.MaxObjects=1000
+
+## Cache Region for ContentRepository Datasources - Caches Objects, without attributes
+jcs.region.gentics-portal-contentrepository-objects=
+jcs.region.gentics-portal-contentrepository-objects.cacheattributes.MaxObjects=1000
+
+## Cache Region for ContentRepository Datasources - Caches Attributes of a Content Object
+jcs.region.gentics-portal-contentrepository-atts=
+jcs.region.gentics-portal-contentrepository-atts.cacheattributes.MaxObjects=2000
+
+## Cache Region for ContentRepository Datasources - Caches results of a given query (only content ids, not the objects/attributtes themselves)
+jcs.region.gentics-portal-contentrepository-results=
+jcs.region.gentics-portal-contentrepository-results.cacheattributes.MaxObjects=1000
+
+## Cache Region for Datasources - Caches results of a given query (The exact data stored may vary between datasources)
+## Used by AbstractCacheableDatasource (e.g. LDAPDatasource)
+jcs.region.gentics-portal-cachedatasource-results=
+jcs.region.gentics-portal-cachedatasource-results.cacheattributes.MaxObjects=1000
+
+## Cache Region for storing count requests (used by AbstractCacheableDatasource - e.g. LDAPDatasource)
+jcs.region.gentics-portal-cachedatasource-count=
+jcs.region.gentics-portal-cachedatasource-count.cacheattributes.MaxObjects=5000
+
+
+## Cache Region for Expression Parser - Caches the parsed expressions.
+jcs.region.gentics-parsedexpressions=
+jcs.region.gentics-parsedexpressions.cacheattributes.MaxObjects=1000
+
+## cache region for DB metadata (e.g. table schemas)
+jcs.region.gentics-portal-cachedb-metadata=
+jcs.region.gentics-portal-cachedb-metadata.cacheattributes.MaxObjects=1000
+
+## cache region for parsed templates in the velocity template engine
+jcs.region.gentics-velocity-template-processor=
+jcs.region.gentics-velocity-template-processor.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.region.gentics-velocity-template-processor.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.region.gentics-velocity-template-processor.cacheattributes.MaxObjects=1000
+jcs.region.gentics-velocity-template-processor.cacheattributes.useLateral=false
+jcs.region.gentics-velocity-template-processor.cacheattributes.useRemote=false
+jcs.region.gentics-velocity-template-processor.cacheattributes.useDisk=false
+jcs.region.gentics-velocity-template-processor.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.region.gentics-velocity-template-processor.elementattributes.IsSpool=false
+jcs.region.gentics-velocity-template-processor.elementattributes.IsRemote=false
+jcs.region.gentics-velocity-template-processor.elementattributes.IsLateral=false
+
+
+# AVAILABLE AUXILIARY CACHES not used
+# jcs.auxiliary.DC=org.apache.jcs.auxiliary.disk.indexed.IndexedDiskCacheFactory
+# jcs.auxiliary.DC.attributes=org.apache.jcs.auxiliary.disk.indexed.IndexedDiskCacheAttributes
+# jcs.auxiliary.DC.attributes.DiskPath=${java.io.tmpdir}/jcs

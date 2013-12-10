@@ -1,0 +1,31 @@
+<img class="pointer" src="/GCN5_Portal/img/comments-bubble-pointer.png">
+#if ($component.items.size() == 0)##
+#if ($portal.user.isloggedin)##
+<p>
+	$portal.imps.i18n.translate("comment.first")
+</p>
+<ul></ul>
+#else##
+<script type="text/javascript">
+jQuery(document).ready(function () {
+	jQuery('.comments').hide();
+	jQuery('.commentsshadow').hide();
+});
+</script>
+#end##
+#else##
+<ul>
+#foreach ($item in $component.items)##
+#set ($hash = $portal.imps.string.md5("$!item.object.useremail"))##
+	<li>
+		<img src="http://www.gravatar.com/avatar/$hash?s=47" />
+		<p>
+			<a href="#">$!item.object.username</a>
+			"$!item.object.text"
+			<small title="$portal.imps.date.format($!item.object.ts)">$portal.imps.date.socialTime("$!item.object.ts")</small>
+		</p>
+	</li>
+#end##
+</ul>
+#end##
+<div class="clear"></div>

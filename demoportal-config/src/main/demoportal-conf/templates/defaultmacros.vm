@@ -1,0 +1,89 @@
+## macro to do paging for DatasourceListComponents and DatasourceTreeComponents
+
+#macro(paging $paging)
+
+#if($paging)
+				#set ($minus10 = $paging.current - 1 - 10)
+					#if ($minus10 < 0) #set ($minus10 = 0) #end
+					## wenn $minus10 < 0, dann gehe auf Seite 1
+
+					#set ($minus10nr = $minus10 + 1)
+				#set ($minus1 = $paging.current - 1 - 1)
+					#if ($minus1 < 0) #set ($minus1 = 0) #end
+					#set ($minus1nr = $minus1 + 1)
+				#set ($plus1 = $paging.current - 1 + 1)
+					#if ($plus1 >= $paging.pages.size()) #set ($plus1 = $paging.pages.size() - 1) #end
+					#set ($plus1nr = $plus1 + 1)
+				#set ($plus10 = $paging.current - 1 + 10)
+					#if ($plus10 >= $paging.pages.size()) #set ($plus10 = $paging.pages.size() - 1) #end
+					## wenn $plus10 > size(), dann gehe auf letzte Seite [.size()]
+
+					#set ($plus10nr = $plus10 + 1)
+
+				## show 5 before and 5 after the current page
+				#set ($firstshown = $paging.current - 5)
+				#set ($lastshown = $paging.current +5)
+				#set ($leftellipsis = false)
+				#set ($rightellipsis = false)
+
+				## zeigt Paging nur an, wenn mehr als 1 Seite vorhanden ist! ;-)
+
+				#if ($paging.pages.size() > 1)
+						<div id="paging">
+							#set($goto = $portal.i18n('Go to page $page'))
+							$goto.setParameter("page", $minus10nr)
+   <a href="$paging.pages.get($minus10).link" title="$goto">&lt;&lt;</a>
+#set($goto = $portal.i18n('Go to page $page'))
+$goto.setParameter("page", $minus1nr)
+					   <a href="$paging.pages.get($minus1).link" title="$goto">&lt;</a>
+					   #foreach ($page in $paging.pages)
+				   	      #if (($page.number >= $firstshown && $page.number <= $lastshown) || $page.number == 1 || $page.number == $paging.pages.size())
+						   #if ($page.number == $paging.current)
+							   <b>$page.number</b>
+						   #else
+							#set($goto = $portal.i18n('Go to page $page'))
+							$goto.setParameter("page", ${page.number})
+					   <a href="$page.link" title="$goto">$page.number</a>
+						   #end
+						   #if ($page.number != $paging.pages.size())
+							   |
+						   #end
+					      #else
+						   #if ($page.number < $paging.current)
+						     #if($leftellipsis == false)
+						       &nbsp;...&nbsp;
+						       #set ($leftellipsis = true)
+						     #end
+						   #else
+						     #if($rightellipsis == false)
+						       &nbsp;...&nbsp;
+						       #set ($rightellipsis = true)
+						     #end
+						   #end
+					      #end
+					   #end
+					#set($goto = $portal.i18n('Go to page $page'))
+					$goto.setParameter("page", $plus1nr)
+					   <a href="$paging.pages.get($plus1).link" title="$goto">&gt;</a>
+					#set($goto = $portal.i18n('Go to page $page'))
+					$goto.setParameter("page", $plus10nr)
+					   <a href="$paging.pages.get($plus10).link" title="$goto">&gt;&gt;</a>
+					   </div>
+				#end
+#end
+
+#end
+## end paging macro
+
+
+#macro(esc $text)#*
+	Escapes the given text for valid HTML
+	*#$portal.imps.string.escapeHTML($text)#*
+*##end
+
+##This macro can be used to make ${javax.portlet.response.namespace} JS ready 
+#macro( nsprepareforjs $namespace )##
+#if("$namespace"!="")##
+$!namespace.toString().replaceAll("[.]","_")##
+#end##
+#end

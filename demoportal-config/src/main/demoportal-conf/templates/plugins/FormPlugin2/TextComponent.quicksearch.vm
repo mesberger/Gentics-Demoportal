@@ -1,0 +1,60 @@
+##=================================================================================================
+## Gentics TextComponent
+##=================================================================================================
+
+##Prefilling
+#if ($component.value && $component.value != "")
+  #set ($value = $component.value)
+#end
+#set ($labelclass = " class='dsl_addons'")
+
+##-- Label ----------------------------------------------------------------------------------------
+<label${labelclass} for="$component.name" >$component.label:#if ($component.optional == false)*#end</label>
+
+##-- TextComponent --------------------------------------------------------------------------------
+<input type="text"
+  ## size
+  #if ($component.properties.size && $component.properties.size != "") size="$component.properties.size" #end
+  
+  ## maxlength
+  #if ($component.properties.maxlength && $component.properties.maxlength != "") maxlength="$component.properties.maxlength" #end  
+  
+  ## style
+  #if ($component.properties.style && $component.properties.style != "") style="$component.properties.style"  #end  
+  
+  ## id
+  id="$component.name" 
+  
+  ## name
+  name="$component.name" 
+  
+  ## enabled / disabled  
+  #if (!$component.enabled) disabled #end
+  
+  ## value
+  value="$portal.imps.string.escapeHTML($value)" 
+  
+  ## classdefinition
+  #set ($cssclass = "")
+  #if ($component.properties.cssclass && $component.properties.cssclass != "")
+    #set ($cssclass = $component.properties.cssclass)
+  #end
+
+  ## class  
+  class="${cssclass}#if ($component.error) alert#end" 
+
+  ## onMouseOver 
+  onmouseover="#if($component.help)doTooltip(event,'$component.help'); #end" 
+  
+  ## onMouseOut   
+  onmouseout="#if($component.help)hideTip(); #end" />
+  
+
+## Focus
+#if ($component.focus)
+  <script language="javascript">
+    <!--
+    document.getElementById("$component.name").focus();
+    -->
+  </script>
+#end

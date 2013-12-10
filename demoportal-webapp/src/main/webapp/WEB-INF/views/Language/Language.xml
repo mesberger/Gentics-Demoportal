@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="Language" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<onview>
+		<actions>
+			<action class="com.gentics.demoportal.language.ContentLanguages" id="languages">
+				<parameters>
+					<parameter id="object" mapped="portal.modules.content.properties"/>
+				</parameters>
+				<onsuccess>
+					<actions>
+						<action class="GeneralViewAction">
+							<parameters>
+								<parameter id="set">module.session.portletscope.languages = actions.languages.languages</parameter>
+								<parameter id="set">module.session.portletscope.pagename = actions.languages.pagename</parameter>
+								<parameter id="set">module.session.portletscope.pagelanguagename = actions.languages.pagelanguagename</parameter>
+								<parameter id="set">module.session.portletscope.pagelanguageid = actions.languages.pagelanguageid</parameter>
+							</parameters>
+						</action>
+					</actions>
+				</onsuccess>
+			</action>
+		</actions>
+	</onview>
+</view>

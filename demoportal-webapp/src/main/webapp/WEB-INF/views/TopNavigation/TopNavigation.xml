@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="TopNavigation" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<datasourcelistcomponent id="topnav">
+		<rule><![CDATA[object.obj_type == 10002 && object.folder_id == portal.properties.navrootfolder_id && object.sortorder != "" && object.permgroups_view CONTAINSONEOF portal.user.groups]]></rule>
+		<sortby>object.sortorder</sortby>
+		<columns></columns>
+	</datasourcelistcomponent>
+</view>

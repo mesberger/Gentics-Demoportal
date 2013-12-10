@@ -1,0 +1,27 @@
+<ul>
+#set($i=0)##
+#foreach ($item in $component.items)##
+	#set($i=$i+1)##
+	## set active state
+	#if ("$portal.modules.content.contentid" == "$item.object.contentid")##
+		#set ($active="active")##
+		#set ($activeIndex=$i)##
+	#else##
+		#set ($active="")##	
+		#set ($activeIndex=1)##
+	#end
+	<li class="status$item.object.status"><a href="$portal.imps.link.to($item.object.contentid, "content")" class="$active">#langfallback($item.object $portal.modules.content.parameters.language)</a></li>
+#end##
+</ul>
+<script type="text/javascript" src="/GCN5_Portal/js/quickpager.jquery.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function () {
+	var start = parseInt($activeIndex / 10);
+	if ($activeIndex > (start * 10)) {
+		start += 1;
+	}
+	jQuery('.box.pages ul').quickPager({
+		currentPage : start
+	});
+});
+</script>

@@ -1,0 +1,12 @@
+<form method="post" action="#esc($actionurl)" id="$form.name" enctype="$form.enctype" #if($form.properties.cssclass) class="$form.properties.cssclass"#end>
+<!--#if ( $form.error )
+	#foreach ($component in $form.components)
+		 #if ($component.error)
+			   <div class="alert">error in $component.label: $component.errortext</div>
+		 #end
+	#end
+<br/>
+#end-->
+$content
+#foreach($button in $buttons) $button #end
+</form>

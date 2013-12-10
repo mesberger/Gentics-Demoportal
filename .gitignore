@@ -1,0 +1,7 @@
+target/
+.settings/
+.project
+.classpath
+CSV
+gentics.log
+velocity.log

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="Pages" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<onview>
+		<actions>
+   			<action id="pages" class="com.gentics.demoportal.GetPagesAction">
+   				<parameters>
+   					<parameter id="host" mapped="portal.properties.gcnbackendurl" />
+   					<parameter id="portletapp_prefix" mapped="portal.properties.portletapp_prefix" />
+   					<parameter id="sid" mapped="portal.user.sessionToken" />
+   					<parameter id="folderId" mapped="portal.modules.content.properties.folder_id" />
+   				</parameters>
+   			</action>
+   			<action id="title" class="RenderTemplateAction">
+   				<parameters>
+					<parameter id="folder" mapped="portal.modules.content.properties.folder_id"/>
+					<parameter id="language" mapped="portal.modules.content.parameters.language"/>
+   					<parameter id="template"><![CDATA[<h1>$portal.imps.i18n.translate("Pages") <small>in #langfallback($folder $language)</small></h1>]]></parameter>
+   				</parameters>
+   			</action>
+   			<action class="GeneralViewAction">
+   				<parameters>
+   					<parameter id="set">view.components.pages.items = actions.pages.pages</parameter>
+   					<parameter id="set">view.components.title.text = actions.title.template</parameter>
+   				</parameters>
+   			</action>
+		</actions>
+	</onview>
+	<labelcomponent id="title">
+		<label></label>
+		<text>Pages</text>
+	</labelcomponent>
+<!-- 
+	<listcomponent id="actionslist">
+		<visible><prule>portal.user.isloggedin</prule></visible>
+		<content>
+ 			<buttoncomponent id="add">
+				<visible><prule><![CDATA[(portal.modules.content.properties.folder_id.permgroups_pagecreate CONTAINSONEOF portal.user.groups)]]></prule></visible>
+				<label>actions.add</label>
+				<properties>
+					<property id="info">actions.a_new_page</property>
+					<property id="title">actions.add.title</property>
+				</properties>
+				<actions>
+					<action class="com.gentics.demoportal.CreatePageAction" id="create">
+						<parameters>
+							<parameter id="backend_url" mapped="portal.properties.gcnbackendurl"/>
+							<parameter id="sid" mapped="portal.user.sessionToken"/>
+							<parameter id="folder_id" mapped="portal.modules.content.properties.folder_id.obj_id"/>
+							<parameter id="template_id" mapped="portal.properties.template_id"/>
+							<parameter id="language" mapped="portal.modules.content.parameters.language"/>
+						</parameters>
+						<onsuccess>
+							<actions>
+								<action class="GeneralViewAction">
+									<parameters>
+										<parameter id="set">portal.modules.content.parameters.backendmode = true</parameter>
+										<parameter id="set">portal.modules.content.parameters.prevcontentid = portal.modules.content.parameters.contentid</parameter>
+										<parameter id="set">portal.modules.content.parameters.contentid = concat("10007.", actions.create.id)</parameter>
+									</parameters>
+								</action>
+							</actions>
+						</onsuccess>
+					</action>
+				</actions>
+			</buttoncomponent>
+		</content>
+	</listcomponent>
+-->
+	<datasourcelistcomponent id="pages">
+		<sortby>object.name</sortby>
+		<columns></columns>
+		<datasource>false</datasource>
+	</datasourcelistcomponent>
+</view>

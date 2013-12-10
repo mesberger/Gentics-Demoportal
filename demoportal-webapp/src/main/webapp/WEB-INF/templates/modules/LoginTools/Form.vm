@@ -1,0 +1,12 @@
+#if ($portal.user.isloggedin)##
+#if (($portal.properties.gcnbackendurl) && ("$!portal.properties.gcnbackendurl" != ""))##
+<a href="$portal.properties.gcnbackendurl" target="_blank">Backend</a> | 
+#end##
+<a href="?gentics.am=login&p._PNlogouturl=true">Logout</a>
+#else##
+#set( $loginurl = $portal.createPortalURL("triggerEvent") )##
+$loginurl.setParameter( "event", "doShowLogin" )##
+## create a reaction on portal.events.doShowLogin
+## there is a portalevent for loggedin
+<a href="$loginurl">Login</a>
+#end##

@@ -1,0 +1,32 @@
+##=================================================================================================
+## Gentics ListComponent.Row
+##=================================================================================================
+## align
+#if ($component.properties.align && $component.properties.align != "")
+  #set ($align = $component.properties.align)
+#else
+  #set ($align = "left")
+#end
+
+#if($component.properties.itemcssclass && $component.properties.itemcssclass!="")
+	#set($itemcss = $component.properties.itemcssclass)
+#else
+	#set($itemcss = "")
+#end
+#set($finalbuttons="")
+#if($component.properties.finalbuttons && $component.properties.finalbuttons=="true")
+<div class="nofloat"> </div>
+#set($finalbuttons="finalbuttons ")
+#end
+## template for a ListComponent to render subcomponents in a row
+<div class="${finalbuttons}float${align}#if($component.properties.cssclass) $component.properties.cssclass#end">
+#if($component.label)  <span><label class="labelleft">$component.label</label></span>#end
+#foreach ($item in $component.items)
+  #if ($component.properties.noinlinediv) 
+    $item		
+  #else
+    <span class="$itemcss">$item</span>
+  #end
+#end
+</div>
+<div class="nofloat"></div>

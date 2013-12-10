@@ -1,0 +1,5 @@
+#foreach ( $button in $component.buttons ) ##
+  #if($button.visible) ##
+<button id="$button.name" name="$button.name" $!onclick>$button.label</button>
+  #end ##
+#end ##

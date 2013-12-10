@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--><!-- Note:  A "Server" is not itself a "Container", so you may not
+     define subcomponents such as "Valves" at this level.
+     Documentation at /docs/config/server.html
+ --><Server port="43805" shutdown="SHUTDOWN">
+
+	<!-- Comment these entries out to disable JMX MBeans support used for the 
+		administration web application -->
+	<Listener className="org.apache.catalina.core.AprLifecycleListener" />
+	<Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
+	<Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+
+  <!-- Global JNDI resources
+       Documentation at /docs/jndi-resources-howto.html
+  -->
+  	<GlobalNamingResources>
+	    <!-- Editable user database that can also be used by
+	         UserDatabaseRealm to authenticate users
+	    -->
+
+		<!-- Test entry for demonstration purposes -->
+		<Environment name="simpleValue" type="java.lang.Integer"
+			value="30" />
+		<Resource auth="Container" description="User database that can be updated and saved"
+			factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase"
+			pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase" />
+
+
+		<Environment name="tomcat/Environment" type="java.lang.String" value="QS" />
+		<Environment name="portal" type="java.lang.String" value="Demoportal" />
+
+	</GlobalNamingResources>
+
+  <!-- A "Service" is a collection of one or more "Connectors" that share
+       a single "Container" Note:  A "Service" is not itself a "Container", 
+       so you may not define subcomponents such as "Valves" at this level.
+       Documentation at /docs/config/service.html
+   -->
+   <Service name="Catalina">
+
+		<!-- Define a non-SSL HTTP/1.1 Connector on port 8080 -->
+		<Connector URIEncoding="UTF-8" acceptCount="100"
+			connectionTimeout="20000" disableUploadTimeout="true" enableLookups="false"
+			maxHttpHeaderSize="8192" maxSpareThreads="75" maxThreads="150"
+			minSpareThreads="25" port="43880" redirectPort="42843" />
+
+		<!-- Define a SSL HTTP/1.1 Connector on port 8443 -->
+		<Connector URIEncoding="UTF-8" acceptCount="100" clientAuth="false"
+			disableUploadTimeout="true" emptySessionPath="true" enableLookups="false"
+			maxHttpHeaderSize="8192" maxSpareThreads="75" maxThreads="150"
+			minSpareThreads="25" port="43443" scheme="https" secure="true"
+			sslProtocol="TLS" />
+
+		<!-- Define an AJP 1.3 Connector on port 8009 -->
+		<Connector URIEncoding="UTF-8" enableLookups="false" port="43809"
+			protocol="AJP/1.3" redirectPort="43443" />
+
+
+		<Engine defaultHost="localhost" name="Catalina">
+			<Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+				resourceName="UserDatabase" />
+
+			<!-- Define the default virtual host Note: XML Schema validation will 
+				not work with Xerces 2.2. -->
+			<Host appBase="webapps" autoDeploy="true" name="localhost"
+				unpackWARs="true" xmlNamespaceAware="false" xmlValidation="false">
+
+				<Context docBase="demoportal-genticsimagestore-webapp" path="/GenticsImageStore" reloadable="true" source="org.eclipse.jst.j2ee.server:demoportal-genticsimagestore-webapp"/>
+				<Context docBase="demoportal-webapp" path="/GCN5_Portal" reloadable="true" source="org.eclipse.jst.j2ee.server:demoportal-webapp"/>
+				<Context docBase="demoportal-portalnode-webapp" path="/Portal.Node" reloadable="true" source="org.eclipse.jst.j2ee.server:demoportal-portalnode-webapp"/>
+			</Host>
+		</Engine>
+	</Service>
+</Server>

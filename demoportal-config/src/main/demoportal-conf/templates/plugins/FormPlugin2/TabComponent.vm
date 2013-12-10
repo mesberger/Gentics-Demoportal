@@ -1,0 +1,36 @@
+##=================================================================================================
+## Gentics TabComponent
+##=================================================================================================
+
+## class definition
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+  #set ($cssclass = $component.properties.cssclass)
+#else
+  #set ($cssclass = "tabbed")
+#end
+
+##-- Tab Label ------------------------------------------------------------------------------------
+<ul#if ($component.properties.style && $component.properties.style != "") style="$component.properties.style"#end class="${cssclass}">
+  	#set ($i = 0)
+
+  #foreach ( $item in $component.items )
+    <li>
+  		  #if ($item.visible)
+  		    ## active tab
+    			  #if ($item.active)
+        <a href="#" class="active">$item.label</a>
+      ## tab		
+      			#elseif ($item.enabled && $component.enabled)
+        <a href="$item.taburl" onclick="getElementById('$form.name').action='$item.taburl';getElementById('$form.name').submit();return false">$item.label</a>      				
+  			    #else
+        				<a href="#">$item.label</a>				
+      			#end
+    		#end
+    		</li>
+  	#end
+</ul>
+<div class="nofloat"></div>
+	##-- Content ---------------------------------------------------------------------------------------
+$component.content
+
+	<div class="closingtab"></div>

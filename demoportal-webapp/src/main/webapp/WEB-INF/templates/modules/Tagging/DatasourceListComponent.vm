@@ -1,0 +1,58 @@
+<script type="text/javascript">
+$(document).ready(function () {
+#if ($portal.modules.content.backendmode)## portal is in backend mode
+	/**
+	 * tags are returned as li-elements to callback functions
+	 * however, we're only interested in the textual contents, 
+	 * excluding the "x"-char
+	 */
+	function getTagStr(elem) {
+		return elem.text().replace("×", "");
+	}
+
+	// autocompletion data 
+	var data = [ { value : "" }, ## there has to be at least one dummy entry, or autocompletion will fail
+#set ($portal.imps.query.prefillAttributes = ["name"])##
+#set ($portal.imps.query.sortBy = "name")##
+#set ($portal.imps.query.rule = "object.obj_type == 37000")##
+#set ($tags = $portal.imps.query.result)##
+#set ($old = "")##
+#foreach ($tag in $tags)##
+#if ($tag.name != $old)##
+{ value: "$tag.name" },##
+#end##
+#set ($old = $tag.name)##
+#end##
+];
+	
+	// edit tags
+	var existingTags = ",#foreach ($item in $component.items)$item.object.name,#end";
+	jQuery("#tags").replaceWith("<input id=\"tags\" type=\"text\" />");
+	jQuery("#tags").autoSuggest(data, { 
+		preFill : "#foreach ($item in $component.items)$item.object.name,#end",
+		startText : "$portal.imps.i18n.translate("t_add_new_tag")",
+		selectionAdded : function (e) {
+			var tag = getTagStr(e);
+			// only add the tag if it has not been added before
+			if (existingTags.indexOf("," + tag + ",") == -1) {
+				existingTags += tag + ",";
+				jQuery.post("/Portal.Node/portal?gentics.rs=tagging.Tagging&gentics.rsid=addTag&gentics.pb=center",
+						{ tag : tag }
+					);
+			}
+		},
+		selectionRemoved : function (e) {
+			var tag = getTagStr(e);
+			jQuery.post("/Portal.Node/portal?gentics.rs=tagging.Tagging&gentics.rsid=removeTag&gentics.pb=center",
+					{ tag : tag }
+				);
+			e.remove();
+		}
+	});
+#else## no backend mode
+	var tags = '#foreach ($item in $component.items)<a href="#">$item.object.name</a>, #end';
+	tags = tags.substring(0, tags.length -2);
+	jQuery("#tags").html(tags);
+#end##
+});
+</script>

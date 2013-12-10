@@ -1,0 +1,66 @@
+<ul class="$component.id">
+#foreach ($item in $component.items) ##
+<li id="action$item.id">$item</li>
+#end ##
+</ul>
+<script type="text/javascript">
+// move add button to navigation if both of them are available
+$(document).ready(function () {
+	var addButtonLi = jQuery('#actionnewfolder');
+	if (addButtonLi.children().length > 0) {
+		addButtonLi.addClass('separator');
+		jQuery('.left .navigation > form > ul').eq(0).append(addButtonLi);
+	}
+		
+	// cleanup empty action ul's
+	jQuery('.box.navigation ul.actions').each(function () {
+		var ul = jQuery(this);
+		if (ul.children('li').length == 0) {
+			ul.remove();
+		}
+	});
+
+	// init "new folder" dialog
+	jQuery('#actionnewfolder').append('<div id="createfolder"><input id="fname" type="text" value="Name">' +
+			'<button id="create" onclick="createFolder(); return false;">$portal.i18n("actions.create")</button></div>');
+})
+
+/**
+ * show the folder creation dialog
+ */
+function showCreateFolder() {
+	jQuery('#actionnewfolder > button').slideUp();
+	jQuery('#actionnewfolder > small').slideUp();
+	jQuery('#createfolder').slideDown().find('input').focus();
+}
+
+/**
+ * handles the process of creating a folder
+ */
+function createFolder() {
+	
+	Aloha.require( 'gcn/gcn-plugin' ).createFolder({
+		success : function (data) {
+		
+			if (!data.folder.startPageId) {
+				jQuery('#createfolder').addClass('message error').html('$portal.i18n("actions.createfolder.error")');
+				return;
+			}
+			
+			// submit switch page form with new startpage
+			jQuery('#actionstartpageid input').attr('value', '10007.' + data.folder.startPageId);
+			jQuery('#actionswitchtopage button').click();
+		}, 
+		failure : function (data) {
+			jQuery('#createfolder').addClass('message error').html('$portal.i18n("actions.createfolder.error")');
+		},
+		body : {
+			motherId : $portal.modules.content.properties.folder_id.obj_id,
+			name : jQuery('#createfolder input').attr('value'),
+			templateId : 1,
+			startpage : true
+		}
+	});
+	return false;
+}
+</script>

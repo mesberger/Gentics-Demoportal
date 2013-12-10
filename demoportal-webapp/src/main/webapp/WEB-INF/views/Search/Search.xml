@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<view id="Search" xmlns="http://www.gentics.com/xml/ns/portal/view">
+	<properties>
+		<property id="cssclass">searchform</property>
+	</properties>
+	<callableactions>
+		<callableaction id="search">
+			<actions>
+				<!-- Set the query data -->
+				<action class="GeneralViewAction">
+					<parameters>
+						<parameter id="set">views.Result.components.result.properties.searchquery = module.parameters.query</parameter>
+						<parameter id="set">view.components.query.data = module.parameters.query</parameter>
+					</parameters>
+				</action>
+
+				<!-- Escape the Query String for using it in the Lucene Query -->
+				<action class="com.gentics.demoportal.search.QueryEscapeAction" id="escape">
+					<parameters>
+						<parameter id="query" mapped="module.parameters.query"/>
+					</parameters>
+				</action>
+
+				<action class="RenderTemplateAction" id="build">
+					<parameters>
+						<parameter id="query" mapped="actions.escape.query"/>
+						<parameter id="language" mapped="portal.modules.content.parameters.language"/>
+						<parameter id="template">
+#set($permstring = "")
+#foreach($perm in $portal.user.groups)
+	#if("$permstring" != "")
+		#set($permstring = "$permstring OR ")
+	#end
+	#set($permstring = "permgroups_view:$perm")
+#end
+#if("$permstring" != "")
+	#set($permstring = " AND ($permstring)")
+#end
+#set($langstring = " AND (content_language:$language OR obj_type:10008)")
+#set($query = "(content:$query OR binarycontent:$query OR name:$query)$langstring$permstring")
+						</parameter>
+					</parameters>
+				</action>
+
+				<!-- Send the query and get the result -->
+				<action class="com.gentics.demoportal.search.GetResultAction" id="fetcher">
+					<parameters>
+						<parameter id="query" mapped="actions.build.query"/>
+						<parameter id="start" mapped="module.parameters.start"/>
+						<parameter id="count" mapped="module.parameters.count"/>
+						<parameter id="sorting" mapped="module.parameters.sorting" />
+						<parameter id="attribute">content</parameter>
+						<parameter id="attribute">binarycontent</parameter>
+						<parameter id="attribute">editor</parameter>
+						<parameter id="attribute">publishtimestamp</parameter>
+						<parameter id="attribute">name</parameter>
+						<parameter id="attribute">mimetype</parameter>
+						<parameter id="attribute">linkedinpages</parameter>
+					</parameters>
+					<onsuccess>
+						<actions>
+							<!-- Enhance the results with information about the comments -->
+							<action class="com.gentics.demoportal.comments.AddCommentInfo" id="comments">
+								<parameters>
+									<parameter id="datasource">portal</parameter>
+									<parameter id="objects" mapped="actions.fetcher.result"/>
+								</parameters>
+							</action>
+							<!-- Enhance the results with I like this information -->
+							<action class="com.gentics.demoportal.like.AddLikeInfo" id="like">
+								<parameters>
+									<parameter id="datasource">portal</parameter>
+									<parameter id="objects" mapped="actions.comments.objects"/>
+								</parameters>
+							</action>
+							<action class="GeneralViewAction">
+								<parameters>
+									<parameter id="set">views.Result.components.result.properties.sorting = module.parameters.sorting</parameter>
+									<parameter id="set">views.Result.components.result.properties.totalhits = actions.fetcher.hits</parameter>
+									<parameter id="set">views.Result.components.result.properties.start = actions.fetcher.start</parameter>
+									<parameter id="set">views.Result.components.result.properties.suggestions = actions.fetcher.suggestions</parameter>
+									<parameter id="set">views.Result.components.result.properties.count = module.parameters.count</parameter>
+									<parameter id="set">views.Result.components.result.properties.timemsec = actions.fetcher.timemsec</parameter>
+									<parameter id="set">views.Result.components.result.properties.timesec = actions.fetcher.timesec</parameter>
+									<parameter id="set">views.Result.components.result.items = actions.like.objects</parameter>
+									<parameter id="set">views.Result.components.result.properties.error = false</parameter>
+								</parameters>
+							</action>
+						</actions>
+					</onsuccess>
+					<onfailure>
+						<actions>
+							<action class="GeneralViewAction">
+								<parameters>
+									<parameter id="set">views.Result.components.result.items = []</parameter>
+									<parameter id="set">views.Result.components.result.properties.error = true</parameter>
+								</parameters>
+							</action>
+						</actions>
+					</onfailure>
+				</action>
+				<!-- Show the search page -->
+				<action class="GeneralViewAction">
+					<parameters>
+						<parameter id="set">portal.page.id = "search"</parameter>
+					</parameters>
+				</action>
+			</actions>
+		</callableaction>
+	</callableactions>
+	<textcomponent id="query">
+		<label/>
+		<properties>
+			<property id="cssclass">searchtextbox</property>
+		</properties>
+	</textcomponent>
+	<buttoncomponent>
+		<label>search.find</label>
+		<actions>
+			<action class="TriggerEventAction">
+				<parameters>
+					<parameter id="event">doSearch</parameter>
+					<parameter id="query" mapped="view.components.query.data"/>
+				</parameters>
+			</action>
+		</actions>
+	</buttoncomponent>
+</view>

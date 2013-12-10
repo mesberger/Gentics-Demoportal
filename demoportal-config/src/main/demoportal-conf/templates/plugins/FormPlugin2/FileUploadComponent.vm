@@ -1,0 +1,26 @@
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+  #set($cssclass = "$component.properties.cssclass")
+#end
+
+<label for="$component.name">$component.label:#if($component.optional == false)*#end</label>
+
+<input#if ($component.properties.style && $component.properties.style != "") style="$component.properties.style"#end type="file" id="$component.name" #if (!$component.enabled) disabled #end name="$component.name" value="$component.value" class="$!cssclass#if($component.error) alert#end" #if($component.help)onmouseover="doTooltip(event,'$component.help');"#end #if($component.help)onmouseout="hideTip();"#end />
+#if($component.viewurl || $component.downloadurl)
+  <br />
+  <label>&nbsp;</label>
+	  #if ($component.viewurl)
+	    <a href="$component.viewurl" target="_blank" alt="view in new window">$portal.i18n("View")</a>
+	  #end
+  #if($component.downloadurl)
+    <a href="$component.downloadurl" alt="download">$portal.i18n("Download")</a>
+  #end
+#end
+
+#if ($component.focus)
+	<script language="javascript">
+	<!--
+	document.getElementById("$component.name").focus();
+	-->
+	</script>
+#end
+<div class="alert">#if ($component.error)$component.errortext#end</div>

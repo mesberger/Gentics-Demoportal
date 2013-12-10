@@ -1,0 +1,42 @@
+_PNlogin=Username
+_PNpassword=Password
+comment.add=Add your comment here...
+comment.first=Be the first to write a comment!
+
+#GenticsDateFormatter.socialTime
+st_prefix=
+st_right_now=right now
+st_second_ago=second ago
+st_seconds_ago=seconds ago
+st_minute_ago=minute ago
+st_minutes_ago=minutes ago
+st_hour_ago=hour ago
+st_hours_ago=hours ago
+st_day_ago=day ago
+st_days_ago=days ago
+st_week_ago=week ago
+st_weeks_ago=weeks ago
+st_month_ago=month ago
+st_months_ago=months ago
+st_year_ago=year ago
+st_years_ago= years ago
+
+#Like
+l_like=Like
+l_one_likes_this=one other person likes this
+l_people_like_this=people like this
+l_you_like=You like this
+l_you=You
+l_and=and
+l_and_one=and one other person like this
+l_and_others=other persons like this
+
+#Tagging
+t_add_new_tag=Add new tag
+
+content.nopermission = You have no permission to view the selected content!
+content.version = <a href="javascript:restoreVersion($timestamp)">Version $number</a> on $date by <a href="#">$firstname $lastname</a>
+content.versionhistory = Version History
+content.lastupdatelong = last updated on $date by $firstname $lastname
+content.lastupdateshort = by $firstname $lastname on $date
+content.unpublished=You're currently editing this page, but your changes have not been published yet: <a href="javascript:triggerPublish()">publish now</a>

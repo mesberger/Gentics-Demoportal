@@ -1,0 +1,26 @@
+##=================================================================================================
+## Gentics ListComponent.Group
+##=================================================================================================
+#set ($cssclass = "")
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+	#set ($cssclass = " $component.properties.cssclass")
+#end
+
+## align
+#if ($component.properties.align && $component.properties.align != "")
+  #set ($align = $component.properties.align)
+#else
+  #set ($align = "left")
+#end
+
+## template for a ListComponent to render subcomponents as a group (with border and label)
+<fieldset class="listGroup" #if ($component.properties.style && $component.properties.style != "") style="$component.properties.style" #end>
+  #if ($component.label)
+    <legend #if ($component.properties.labelstyle && $component.properties.labelstyle != "") style="$component.properties.labelstyle" #end>$component.label</legend>
+  #end
+  <div class="formbox${cssclass}">
+  #foreach ($item in $component.items)
+    <div class="formrow">$item</div>
+  #end
+  </div>
+</fieldset>

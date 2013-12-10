@@ -1,0 +1,3 @@
+#foreach($portlet in $portal.page.positions.content.portlets)
+$portlet
+#end

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: web.xml,v 1.25 2008-10-23 16:04:15 jan Exp $ -->
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+	<icon></icon>
+	<display-name>Gentics® Portal.Node® @@VERSION@@ build @@BUILDNUMBER@@</display-name>
+	<!-- Integration of Gentics Portal.Node Server -->
+
+	<servlet>
+		<servlet-name>PortalServlet</servlet-name>
+		<servlet-class>com.gentics.portalnode.PortalServlet</servlet-class>
+		<init-param>
+			<param-name>product</param-name>
+			<param-value>${portalnode.product}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>version</param-name>
+			<param-value>@@VERSION@@</param-value>
+		</init-param>
+		<init-param>
+			<param-name>build</param-name>
+			<param-value>@@BUILDNUMBER@@</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PortalServlet</servlet-name>
+		<url-pattern>/portal/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortalServlet</servlet-name>
+		<url-pattern>/public/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortalServlet</servlet-name>
+		<url-pattern>/secure/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PortalServlet</servlet-name>
+		<url-pattern>/go/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GenticsInvokerServlet</servlet-name>
+		<servlet-class>com.gentics.portalnode.portlet.InvokerServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<listener>
+		<description>Session Listener (does session cleanup)</description>
+		<listener-class>com.gentics.portalnode.portal.GenticsSessionListener</listener-class>
+	</listener>
+	<listener>
+		<description>Session Listener for the WebServices</description>
+		<listener-class>com.gentics.portalnode.ws.WebServiceSessionListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>BookmarkFilter</filter-name>
+		<filter-class>com.gentics.portalnode.portal.BookmarkFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>BookmarkFilter</filter-name>
+		<url-pattern>/go/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>WebServiceAuthenticationFilter</filter-name>
+		<filter-class>com.gentics.portalnode.ws.WebServiceAuthenticationFilter</filter-class>
+	</filter>
+
+	<servlet>
+		<servlet-name>WebServiceServlet</servlet-name>
+		<servlet-class>com.gentics.portalnode.ws.WebServiceServlet</servlet-class>
+		<load-on-startup>99</load-on-startup>
+	</servlet>
+
+	<filter-mapping>
+		<filter-name>WebServiceAuthenticationFilter</filter-name>
+		<servlet-name>WebServiceServlet</servlet-name>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>DispatchFilter</filter-name>
+		<filter-class>com.gentics.portalnode.portal.DispatchFilter</filter-class>
+		<init-param>
+			<param-name>ignore</param-name>
+			<param-value>^(/portal.*|/public.*|/secure.*|/go.*|/ws.*|/profiler.*|/static.*|/index.html)$</param-value>
+		</init-param>
+		<init-param>
+			<param-name>match</param-name>
+			<param-value>^(.*)$</param-value>
+		</init-param>
+		<init-param>
+			<param-name>rewrite</param-name>
+			<param-value>/portal$1</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>DispatchFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Mapping for the webservice servlet (for listing services, ...) -->
+	<servlet-mapping>
+		<servlet-name>WebServiceServlet</servlet-name>
+		<url-pattern>/ws</url-pattern>
+	</servlet-mapping>
+
+	<!-- Mapping for the services -->
+	<servlet-mapping>
+		<servlet-name>WebServiceServlet</servlet-name>
+		<url-pattern>/ws/services/*</url-pattern>
+	</servlet-mapping>
+
+	<jsp-config>
+		<taglib id="portlet">
+			<taglib-uri>http://java.sun.com/portlet</taglib-uri>
+			<taglib-location>/WEB-INF/portlettags.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error.html</location>
+	</error-page>
+
+
+
+
+
+
+
+
+	<!-- SSO listener -->
+	<listener>
+		<listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+	</listener>
+
+	<!-- start SSO Filters -->
+	<!-- <filter> <filter-name>Reauthentication Helper</filter-name> <filter-class>com.gentics.labs.sso.cas.client.gpn.ReauthenticationHelperFilter</filter-class> 
+		</filter> <filter-mapping> <filter-name>Reauthentication Helper</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
+
+
+	<filter>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<filter>
+		<filter-name>CAS Authentication Filter</filter-name>
+		<filter-class>com.gentics.labs.sso.cas.client.gpn.AuthenticationFilterHelper</filter-class>
+		<init-param>
+			<param-name>casServerLoginUrl</param-name>
+			<param-value>http://localhost:8088/cas-server/login</param-value>
+		</init-param>
+		<init-param>
+			<param-name>serverName</param-name>
+			<param-value>http://localhost:8081</param-value>
+		</init-param>
+		<init-param>
+			<param-name>gateway</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>gatewayStorageClass</param-name>
+			<param-value>com.gentics.labs.sso.cas.client.SessionLongGatewayResolverImpl</param-value>
+		</init-param>
+
+		<!-- Ignoring this patterns for Authentication Filter e.g. "/test;/users/exp;/test2" -->
+		<init-param>
+			<param-name>ignoreUrlPatterns</param-name>
+			<param-value>/users/export;/grpiconf/preloadimgcache</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CAS Authentication Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<filter>
+		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+		<filter-class>org.jasig.cas.client.util.HttpServletRequestWrapperFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<filter>
+		<filter-name>PN CAS Integration Filter</filter-name>
+		<filter-class>com.gentics.labs.sso.cas.client.CASIntegrationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>PN CAS Integration Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- end SSO Filters -->
+
+</web-app>

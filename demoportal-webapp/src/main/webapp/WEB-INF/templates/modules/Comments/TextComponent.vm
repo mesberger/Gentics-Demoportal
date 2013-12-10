@@ -1,0 +1,51 @@
+<script type="text/javascript">
+#set ($hash = $portal.imps.string.md5("$!portal.user.email"))##
+jQuery(document).ready(function () {
+	var comment = jQuery("#comment");
+	var form = jQuery(".box.comments form");
+	var submit = form.find("input[type=submit]");
+
+	// comment box animations
+	comment.focus(function() {
+		var c = jQuery(this);
+		if (c.text() == "$portal.imps.i18n.translate("comment.add")") {
+			c.text("");
+			c.animate({ height: "80px" }, 300, function () {
+				// the focus has to be blurred first, or setting focus won't work
+				// this seems to be an .animate() glitch
+				c.blur().focus();
+				// finally show the submit button
+				jQuery(".box.comments input[type=submit]").slideDown("fast");
+			});
+		}
+	});
+
+	// ajax submission of comments
+	submit.click(function () {
+		submit.fadeOut();
+		comment.addClass("ajaxload").attr("disabled", "disabled");
+		jQuery.post(
+			form.attr("action"),
+			{
+				// TODO this should be revamped as form element names are hardcoded 
+				// using dot-syntax for parameter names won't work properly
+				"p.center.comments.Comments.c.comment.text" : comment.val(),
+				"p.center.comments.Comments.c.submit.btn0.v" : "submit"
+			},
+			function (data, textStatus) {
+				comment.fadeOut();
+				jQuery("<li style=\"display: none\">" +
+					"<img src=\"http://www.gravatar.com/avatar/$hash?s=47\" />" +
+					"<p>" +
+					"<a href=\"#\">$!portal.user.firstname $!portal.user.lastname</a> " + 
+					"&quot;" + comment.val() + "&quot; " +
+					"<small title=\"$portal.imps.i18n.translate("st_right_now")\">$portal.imps.i18n.translate("st_right_now")</small>" + 
+					"</p>" + 
+					"</li>").appendTo(".box.comments ul").slideDown();
+			}
+		);
+		return false;
+	});
+});
+</script>
+<textarea id="comment" name="$component.name">$portal.imps.i18n.translate("comment.add")</textarea>

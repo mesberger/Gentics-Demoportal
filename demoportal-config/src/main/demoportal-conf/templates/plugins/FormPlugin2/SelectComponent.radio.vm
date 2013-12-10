@@ -1,0 +1,29 @@
+##=================================================================================================
+## Gentics RadioComponent
+##=================================================================================================
+#set ($labelclass = "")
+#if ($component.properties.labelclass && $component.properties.labelclass != "")
+  #set ($labelclass = " class='$component.properties.labelclass'")
+#end
+#set ($labelstyle = "")
+#if ($component.properties.labelstyle && $component.properties.labelstyle != "")
+  #set ($labelstyle = " style='$component.properties.labelstyle'")
+#end
+## Label
+#if ($component.label)
+<label${labelclass}${labelstyle} for="$name">
+  $component.label
+</label>
+#end
+
+## Radiocontainer
+<div class="radiocontainer">
+  #foreach ($item in $items)
+    ## Radioelement
+    <div class="radioelement" >
+      <input type="radio" name="$name" #if ($item.selected) checked #end $component.properties.get("key${item.value}") #if ($hasvalues) value="$item.value"#end id="${select.id}${item.value}" #if ($component.properties.style && $component.properties.style != "") style="$component.properties.style" #end/>
+        <label for="${select.id}${item.value}" #if ($component.properties.elementstyle && $component.properties.elementstyle != "") style="$component.properties.elementstyle" #end >$item.name</label>
+    </div>
+  #end
+</div>
+<div class="alert">#if ($select.error)$select.errortext#end</div>

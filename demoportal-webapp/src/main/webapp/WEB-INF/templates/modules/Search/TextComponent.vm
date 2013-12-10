@@ -1,0 +1,33 @@
+## default property values
+#set ($elemid = "#nsprepareforjs($component.name)")
+
+<input type="text"
+	## size
+	#if ($size) size="$size" #end
+
+	## maxlength
+	#if ($maxlength) maxlength="$maxlength" #end
+
+	## style
+	#if ($style) style="$style" #end
+
+	## id
+	id="$elemid"
+
+	## name
+	name="$component.name"
+
+	## enabled / disabled
+	#if (!$component.enabled) disabled #end
+
+	## value
+	value="$portal.imps.string.escapeHTML($value)"
+
+	## class
+	class="$!{component.properties.cssclass}#if ($component.error) alert#end"
+
+	## onMouseOver 
+	onmouseover="#if($component.help)doTooltip(event,'$component.help'); #end"
+
+	## onMouseOut
+	onmouseout="#if($component.help)hideTip(); #end" />

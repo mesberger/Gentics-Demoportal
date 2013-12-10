@@ -1,0 +1,60 @@
+##=================================================================================================
+## Gentics CheckBoxComponent
+##=================================================================================================
+
+## classdefinition
+#set ($cssclass = "checkbox")
+#if ($component.properties.cssclass && $component.properties.cssclass != "")
+  #set ($cssclass = "$cssclass $component.properties.cssclass")
+#end
+#set ($labelclass = "")
+#if ($component.properties.labelclass && $component.properties.labelclass != "")
+  #set ($labelclass = " class='$component.properties.labelclass'")
+#end
+#set ($labelstyle = "")
+#if ($component.properties.labelstyle && $component.properties.labelstyle != "")
+  #set ($labelstyle = " style='$component.properties.labelstyle'")
+#end
+
+##-- Label ----------------------------------------------------------------------------------------
+#if ($component.label)
+<label${labelclass}${labelstyle} for="$component.name" >
+  $component.label:#if ($component.optional == false)*#end
+</label>
+#end
+
+##-- CheckBox -------------------------------------------------------------------------------------
+<input type="hidden" name="$component.name" value=""/>
+<input type="checkbox" id="$component.name" name="$component.name" value="$portal.imps.string.escapeHTML($component.value)" 
+  ## checked
+  #if ($component.selected) checked="checked" #end 
+  
+  ## enabled / disabled
+  #if (!$component.enabled) disabled #end 
+  
+  ## class  
+  class="checkbox ${cssclass}#if ($component.error) alert#end"
+  
+  ## style
+  #if ($component.properties.style && $component.properties.style != "") style="$component.properties.style"  #end
+  
+  ## accesskey 
+  #if ($component.properties.accesskey) accesskey="$component.properties.accesskey" #end
+  
+  ## onMouseOver 
+  #if($component.help)onmouseover="doTooltip(event,'$component.help');"#end 
+  
+  ## onMouseOut   
+  #if($component.help)onmouseout="hideTip();"#end />
+
+##-- Focus ----------------------------------------------------------------------------------------
+#if ($component.focus)
+  <script language="javascript">
+  <!--
+    document.getElementById("$component.name").focus();
+  -->
+  </script>
+#end
+
+##-- ErrorText ------------------------------------------------------------------------------------
+<div class="alert">#if ($component.error)$component.errortext#end</div>

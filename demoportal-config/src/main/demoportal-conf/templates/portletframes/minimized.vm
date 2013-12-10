@@ -1,0 +1,14 @@
+<div class="box $portlet.id $portlet.portletreload">
+	<div class="boxinside">
+		<div class="head">
+			<div class="boxactions">
+				#foreach($action in $portlet.actions)
+					<div class="$portal.i18n($action.id)"><a href="$action.url"><img src="static/images/blank.gif"></a></div>
+				#end
+			</div>
+			<div class="filling">#if($portlet.titleaction)<a href="$portlet.titleaction.url">$portal.i18n($portlet.title)</a>#else$portal.i18n($portlet.title)#end</div>
+		</div>
+		<div class="nofloat"></div>
+	</div>
+</div>
+<div class="nofloat"></div>

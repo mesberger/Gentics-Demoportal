@@ -1,0 +1,161 @@
+## dummy button to generate saved fade-out effect
+<button id="saved" disabled="disabled">$portal.imps.i18n.translate("actions.saved")</button>
+<ul class="actions">
+#foreach ($item in $component.items) ##
+<li id="action$item.id">$item</li>
+#end ##
+</ul>
+<script type="text/javascript">
+$(document).ready(function () {
+
+
+	window.GCN = null;
+	
+	
+	
+	// cleanup empty action li's
+	jQuery('.box.actions .actions li').each(function () {
+		var li = jQuery(this);
+		if (li.children().length == 0) {
+			li.remove();
+		}
+	});
+	// remove publish button and turn it into a link
+	var publishButtonLi = jQuery('#actionpublish');
+	publishButtonLi.hide();
+	var orPub = '$portal.imps.i18n.translate("actions.or")' + 
+#if	($module.session.portletscope.maypublish)##
+			' <a href="javascript:triggerPublish()">$portal.imps.i18n.translate("actions.publish")</a>';
+#else##
+			' <a href="javascript:triggerPublish()">$portal.imps.i18n.translate("actions.requestpublish")</a>';
+#end##
+	jQuery('.box.actions #actionsave small').html(orPub);
+
+	// register Meta+S shortcut to save the page
+	jQuery(document).keydown(function (e) {
+		if (e.metaKey && e.keyCode == 83) {
+			var save = jQuery('#actionsave button');
+			if (!save.attr('disabled')) {
+				save.click();
+				e.preventDefault();
+				e.stopPropagation();
+				return false;
+			}
+		} 
+	});
+
+	// add tooltips for page delete buttons
+	jQuery('button').tipTip({
+		defaultPosition : 'top'
+	});
+});
+/**
+ * trigger a publish request
+ * this basically goes through the same steps as a click on the publish button
+ */
+function triggerPublish() {
+	var form = document.getElementById("left.actions.Actions");
+	var param = "&" + jQuery("#actionpublish button").attr("id") + "=1"; 
+	Aloha.require( 'gcn/gcn-plugin' ).publishPage( function() {
+		form.action += param; form.submit();
+	}); 
+}
+
+/**
+ * savePage feedback
+ */
+function savePageSuccess() {
+	var save = jQuery('#actionsave button');
+	var actionSave = jQuery('#actionsave');
+	var saved = jQuery('#saved').show();
+	var secsAgo = 0;
+	var savedTipInitialized = false;
+	// yes, this is intended to be global as the information has to persisted over multiple savePageSuccess calls
+	saveInterval = false;
+
+	save.text("$portal.imps.i18n.translate("actions.saved")");
+	save.attr('disabled', true);
+	
+	// remove feedback after 2s
+	setTimeout(function () {
+		saved.fadeOut('slow');
+	}, 2000);
+
+	// clear previous save interval
+	if (saveInterval) {
+		clearInterval(saveInterval);
+	}
+	
+	// check if the content has changed to re-enable the save button
+	saveInterval = setInterval(function () {
+		secsAgo++;
+
+		// only initialitze the tip on the first run
+		if (!savedTipInitialized) {
+			actionSave.attr('title', '$portal.imps.i18n.translate("actions.save_success")');
+			actionSave.tipTip({
+				defaultPosition : 'top',
+				enter : function ()  {
+					if (secsAgo < 60) {
+						return '$portal.imps.i18n.translate("actions.saved_seconds_ago")'
+								.replace('%secs%', secsAgo);
+					} else if (secsAgo < 120) {
+						return '$portal.imps.i18n.translate("actions.saved_minute_ago")';
+					} else {
+						return '$portal.imps.i18n.translate("actions.saved_minutes_ago")'
+								.replace('%mins%', parseInt(secsAgo / 60));
+					}
+				}
+			});
+			savedTipInitialized = true;
+		}
+		
+		if (Aloha.isModified()) {
+			save.removeAttr('disabled');
+			save.text(save.text("$portal.imps.i18n.translate("actions.save")"));
+		}
+	}, 1000);
+}
+
+/**
+ * delete this page
+ */
+function deletePage() {
+#if ("$portal.page.id" == "wikidocs")
+	var o = jQuery('.box.content .document');
+#else
+	var o = jQuery('.box.content');
+#end
+	Aloha.require( 'gcn/gcn-plugin' ).deletePage({
+		onsuccess : function () {
+			o.slideUp(function () {
+				jQuery(this)
+					.html('<div class="message success">$portal.imps.i18n.translate("actions.delete.success")</div>')
+					.fadeIn();
+			});
+			// hide all buttons from the actions portlet
+			jQuery('.box.actions').slideUp();
+		},
+		onfailure : function () {
+			o.prepend('<div class="message error">$portal.imps.i18n.translate("actions.delete.error")</div>');
+		}
+	});
+}
+
+/**
+ * deletes a folder
+ */
+function deleteFolder(o, id) {
+	var li = jQuery(o).parent();
+	Aloha.require( 'gcn/gcn-plugin' ).deleteFolder({
+		id : id,
+		onsuccess : function () {
+			li.html('<div class="message success">$portal.imps.i18n.translate("actions.delete.success")</div>');
+		},
+		onfailure : function () {
+			li.html('<div class="message error">$portal.imps.i18n.translate("actions.delete.error")</div>');
+		}
+	});
+}
+</script>
+<br class="clear" />

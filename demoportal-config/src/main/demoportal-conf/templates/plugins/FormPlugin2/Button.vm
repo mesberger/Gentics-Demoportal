@@ -1,0 +1,22 @@
+## this button template is deprecated and usually not used. use ButtonComponent.vm instead
+#################################################
+## Set Accesskeys (should be done with an imp)
+#################################################
+##
+#set ($accesslabel = $button.label)
+#set ($accesslabel = $portal.imps.string.regexp($button.label.toString(), "^(.*)_([a-zA-Z]?)_(.*)$", "\\$1<span class=accesskey>\\$2</span>\\$3"))
+#set ($accesskey = $portal.imps.string.regexp($button.label.toString(), "^(.*)_([a-zA-Z]?)_(.*)$", "\\$2"))
+## Cleaning
+#set ( $accesslabel = $portal.imps.string.regexp($accesslabel, '\\', ""))
+#set ( $accesskey = $portal.imps.string.regexp($accesskey, '\\', ""))
+##
+## end Accesskeys ################################
+#if($button.visible)
+  <input type="submit" name="$button.name"
+    #if ($button.id) id="$button.id"#end
+    #if ($button.properties.style && $button.properties.style != "") style="$component.properties.style"  #end     
+    #if($button.enabled != true) disabled#end
+    #if($button.enabled != true) class="buttondisabled"#else class="button"#end
+    onclick="oldaction=document.getElementById('$form.name').action;document.getElementById('$form.name').action+='&$button.name=1';document.getElementById('$form.name').submit();document.getElementById('$form.name').action=oldaction"
+    #if ($accesskey.length() > 0) accesskey="$accesskey"#end value="$label">
+#end

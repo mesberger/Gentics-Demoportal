@@ -1,0 +1,8 @@
+#if ($component.text)
+#if($component.label.length() > 0)
+<label>
+$component.label#if ($component.optional == false)*#end
+</label>
+#end
+<div>$component.text</div>
+#end
