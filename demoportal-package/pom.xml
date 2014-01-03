@@ -184,7 +184,7 @@
 							<attach>true</attach>
 							<appendAssemblyId>true</appendAssemblyId>
 							<descriptors>
-								<descriptor>src/main/assembly/portal-package.xml</descriptor>
+								<descriptor>src/assembly/portal-package.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>

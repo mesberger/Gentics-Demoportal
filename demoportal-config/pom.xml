@@ -51,9 +51,6 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<!-- 
-							<excludeArtifactIds></excludeArtifactIds>
-							 -->
 							<includeTypes>jar</includeTypes>
 							<outputDirectory>${project.build.directory}/sharedlibs</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
@@ -68,9 +65,6 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<!-- 
-							<includeArtifactIds>,</includeArtifactIds>
-							 -->
 							<excludeTransitive>true</excludeTransitive>
 							<includeTypes>jar</includeTypes>
 							<outputDirectory>${project.build.directory}/sharedlibs</outputDirectory>
