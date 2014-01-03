@@ -82,6 +82,15 @@
 
 		<dependencySet>
 			<useStrictFiltering>false</useStrictFiltering>
+			<outputDirectory>/demoportal/sharedlibs/libs</outputDirectory>
+			<unpack>true</unpack>
+			<includes>
+				<include>com.gentics:demoportal-config:*:extra-lib-package</include>
+			</includes>
+		</dependencySet>
+
+		<dependencySet>
+			<useStrictFiltering>false</useStrictFiltering>
 			<outputDirectory>/demoportal/sharedlibs/libs
 			</outputDirectory>
 			<unpack>false</unpack>

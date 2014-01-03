@@ -94,6 +94,20 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>make-extra-lib-package-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<attach>true</attach>
+							<appendAssemblyId>true</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/assembly/extra-lib-package.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+					<execution>
 						<id>make-gentics-config-assembly</id>
 						<phase>package</phase>
 						<goals>
