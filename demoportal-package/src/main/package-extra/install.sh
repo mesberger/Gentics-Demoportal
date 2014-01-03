@@ -132,7 +132,7 @@ function configureFrontend() {
 function configureBackend() {
  if [ -e /Node/ ] ; then
    echo -e "\n * Configuring backend (GCN)"
-     if [ ! -e /Node/apache/conf/sites-enabled/020-portal.conf ] then
+     if [ ! -e /Node/apache/conf/sites-enabled/020-portal.conf ] ; then
        ln -s /Node/apache/conf/sites-available/portal.conf /Node/apache/conf/sites-enabled/020-portal.conf
        sed -i "s/ServerName.*/ServerName $gcn-testing.office/" /Node/apache/conf/sites-enabled/020-portal.conf
        handleError $? "Could not enable portal site"

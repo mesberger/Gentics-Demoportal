@@ -50,6 +50,15 @@
 			<type>war</type>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.gentics</groupId>
+			<artifactId>demoportal-config</artifactId>
+			<version>${project.version}</version>
+			<classifier>gentics-conf-package</classifier>
+			<type>zip</type>
+			<scope>runtime</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>com.gentics</groupId>

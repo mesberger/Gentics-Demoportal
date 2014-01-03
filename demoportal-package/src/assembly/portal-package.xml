@@ -17,6 +17,9 @@
 			</includes>
 			<excludes>
 				<exclude>**/catalina.properties</exclude>
+				<exclude>**/*.exe</exclude>
+				<exclude>**/*.bat</exclude>
+				<exclude>**/webapps/**</exclude>
 			</excludes>
 			<filtered>false</filtered>
 		</fileSet>
@@ -49,14 +52,6 @@
 		</fileSet>
 
 		<fileSet>
-			<directory>${basedir}/target/server_configuration/gentics</directory>
-			<outputDirectory>/demoportal/conf/gentics</outputDirectory>
-			<includes>
-				<include>**</include>
-			</includes>
-		</fileSet>
-
-		<fileSet>
 			<directory>${basedir}/target/sharedlibs</directory>
 			<outputDirectory>/demoportal/sharedlibs/libs
 			</outputDirectory>
@@ -76,6 +71,15 @@
 	</fileSets>
 
 	<dependencySets>
+		<dependencySet>
+			<useStrictFiltering>false</useStrictFiltering>
+			<outputDirectory>/demoportal/conf/gentics</outputDirectory>
+			<unpack>true</unpack>
+			<includes>
+				<include>com.gentics:demoportal-config:*:gentics-conf-package</include>
+			</includes>
+		</dependencySet>
+
 		<dependencySet>
 			<useStrictFiltering>false</useStrictFiltering>
 			<outputDirectory>/demoportal/sharedlibs/libs

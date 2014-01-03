@@ -93,6 +93,20 @@
 							</descriptors>
 						</configuration>
 					</execution>
+					<execution>
+						<id>make-gentics-config-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<attach>true</attach>
+							<appendAssemblyId>true</appendAssemblyId>
+							<descriptors>
+								<descriptor>src/assembly/gentics-config.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
