@@ -368,7 +368,7 @@ this is the main configuration file of the portal server. it's loaded once on se
 			<template-loader id="portalpage">
 				<class-name>com.gentics.portalnode.templateengine.loader.FileLoader</class-name>
 				<parameters>
-					<parameter id="path">${com.gentics.portalnode.confpath}templates/portalpages</parameter>
+					<parameter id="path">${com.gentics.portalnode.confpath}/templates/portalpages</parameter>
 					<parameter id="modificationCheckInterval">${portal.modificationCheckInterval}</parameter>
 				</parameters>
 			</template-loader>
